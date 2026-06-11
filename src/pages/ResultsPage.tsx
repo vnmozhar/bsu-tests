@@ -3,7 +3,7 @@ import {
 } from 'antd'
 import {
   CheckCircleFilled, CloseCircleFilled, TrophyOutlined, ReloadOutlined,
-  CheckOutlined, CloseOutlined,
+  CheckOutlined, CloseOutlined, HomeOutlined, BookOutlined,
 } from '@ant-design/icons'
 import type { Question } from '../types'
 
@@ -13,6 +13,7 @@ interface Props {
   questions: Question[]
   answers: Record<number, string>
   onRestart: () => void
+  onGoHome: () => void
 }
 
 function getGrade(percent: number): { label: string; color: string } {
@@ -22,14 +23,47 @@ function getGrade(percent: number): { label: string; color: string } {
   return { label: 'Needs improvement', color: '#ff4d4f' }
 }
 
-export default function ResultsPage({ questions, answers, onRestart }: Props) {
+export default function ResultsPage({ questions, answers, onRestart, onGoHome }: Props) {
   const correctCount = questions.filter((q) => answers[q.id] === q.correct_answer).length
   const total = questions.length
   const percent = Math.round((correctCount / total) * 100)
   const grade = getGrade(percent)
 
   return (
-    <div style={{ background: '#f4f5f7', minHeight: '100vh', padding: '24px 16px' }}>
+    <div style={{ background: '#f4f5f7', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* Header */}
+      <div
+        style={{
+          background: '#1677ff',
+          padding: '0 24px',
+          height: 54,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+          flexShrink: 0,
+        }}
+      >
+        <Space style={{ cursor: 'pointer' }} onClick={onGoHome} title="Back to Home">
+          <BookOutlined style={{ color: '#fff', fontSize: 18 }} />
+          <Text style={{ color: '#fff', fontSize: 16, fontWeight: 600 }}>Quiz App</Text>
+          <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>/ Results</Text>
+        </Space>
+        <Button
+          icon={<HomeOutlined />}
+          size="small"
+          onClick={onGoHome}
+          style={{
+            background: 'rgba(255,255,255,0.15)',
+            borderColor: 'rgba(255,255,255,0.3)',
+            color: '#fff',
+          }}
+        >
+          Home
+        </Button>
+      </div>
+
+      <div style={{ flex: 1, padding: '24px 16px' }}>
       <div style={{ maxWidth: 860, margin: '0 auto' }}>
 
         {/* Score card */}
@@ -250,18 +284,29 @@ export default function ResultsPage({ questions, answers, onRestart }: Props) {
           })}
         </Card>
 
-        {/* Bottom restart */}
-        <div style={{ textAlign: 'center', marginTop: 24 }}>
-          <Button
-            type="default"
-            size="large"
-            icon={<ReloadOutlined />}
-            onClick={onRestart}
-            style={{ borderRadius: 8, height: 44, paddingInline: 28 }}
-          >
-            Start new quiz
-          </Button>
+        {/* Bottom buttons */}
+        <div style={{ textAlign: 'center', marginTop: 24, paddingBottom: 24 }}>
+          <Space size={12}>
+            <Button
+              icon={<HomeOutlined />}
+              size="large"
+              onClick={onGoHome}
+              style={{ borderRadius: 8, height: 44, paddingInline: 24 }}
+            >
+              Home
+            </Button>
+            <Button
+              type="default"
+              size="large"
+              icon={<ReloadOutlined />}
+              onClick={onRestart}
+              style={{ borderRadius: 8, height: 44, paddingInline: 24 }}
+            >
+              New quiz
+            </Button>
+          </Space>
         </div>
+      </div>
       </div>
     </div>
   )

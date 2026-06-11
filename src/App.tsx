@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { ConfigProvider } from 'antd'
+import HomePage from './pages/HomePage'
+import LearnPage from './pages/LearnPage'
 import SetupPage from './pages/SetupPage'
 import QuizPage from './pages/QuizPage'
 import ResultsPage from './pages/ResultsPage'
@@ -8,13 +10,15 @@ import questionsData from './data/questions.json'
 
 const allQuestions = questionsData as Question[]
 
-type View = 'setup' | 'quiz' | 'results'
+type View = 'home' | 'learn' | 'setup' | 'quiz' | 'results'
 
 export default function App() {
-  const [view, setView] = useState<View>('setup')
+  const [view, setView] = useState<View>('home')
   const [questions, setQuestions] = useState<Question[]>([])
   const [feedbackMode, setFeedbackMode] = useState<FeedbackMode>('end')
   const [finalAnswers, setFinalAnswers] = useState<Record<number, string>>({})
+
+  const goHome = () => setView('home')
 
   const handleStart = (count: number, mode: FeedbackMode) => {
     const shuffled = [...allQuestions].sort(() => Math.random() - 0.5)
@@ -27,10 +31,6 @@ export default function App() {
   const handleSubmit = (answers: Record<number, string>) => {
     setFinalAnswers(answers)
     setView('results')
-  }
-
-  const handleRestart = () => {
-    setView('setup')
   }
 
   return (
@@ -48,21 +48,33 @@ export default function App() {
         },
       }}
     >
+      {view === 'home' && (
+        <HomePage
+          total={allQuestions.length}
+          onSelectLearn={() => setView('learn')}
+          onSelectQuiz={() => setView('setup')}
+        />
+      )}
+      {view === 'learn' && (
+        <LearnPage onGoHome={goHome} />
+      )}
       {view === 'setup' && (
-        <SetupPage total={allQuestions.length} onStart={handleStart} />
+        <SetupPage total={allQuestions.length} onStart={handleStart} onGoHome={goHome} />
       )}
       {view === 'quiz' && (
         <QuizPage
           questions={questions}
           feedbackMode={feedbackMode}
           onSubmit={handleSubmit}
+          onGoHome={goHome}
         />
       )}
       {view === 'results' && (
         <ResultsPage
           questions={questions}
           answers={finalAnswers}
-          onRestart={handleRestart}
+          onRestart={() => setView('setup')}
+          onGoHome={goHome}
         />
       )}
     </ConfigProvider>

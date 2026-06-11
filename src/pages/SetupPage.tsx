@@ -4,6 +4,7 @@ import {
 } from 'antd'
 import {
   PlayCircleOutlined, BookOutlined, BulbOutlined, CheckCircleOutlined, ClockCircleOutlined,
+  HomeOutlined,
 } from '@ant-design/icons'
 import type { FeedbackMode } from '../types'
 
@@ -12,9 +13,10 @@ const { Title, Text, Paragraph } = Typography
 interface Props {
   total: number
   onStart: (count: number, mode: FeedbackMode) => void
+  onGoHome: () => void
 }
 
-export default function SetupPage({ total, onStart }: Props) {
+export default function SetupPage({ total, onStart, onGoHome }: Props) {
   const [count, setCount] = useState(Math.min(10, total))
   const [feedbackMode, setFeedbackMode] = useState<FeedbackMode>('end')
 
@@ -38,6 +40,17 @@ export default function SetupPage({ total, onStart }: Props) {
         styles={{ body: { padding: '36px 40px' } }}
       >
         <Space direction="vertical" size={0} style={{ width: '100%' }}>
+          {/* Home link */}
+          <Button
+            type="text"
+            size="small"
+            icon={<HomeOutlined />}
+            onClick={onGoHome}
+            style={{ padding: 0, color: '#8c8c8c', marginBottom: 16 }}
+          >
+            Home
+          </Button>
+
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: 28 }}>
             <BookOutlined style={{ fontSize: 52, color: '#1677ff', marginBottom: 12, display: 'block' }} />

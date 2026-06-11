@@ -5,7 +5,7 @@ import {
 } from 'antd'
 import {
   CheckCircleFilled, CloseCircleFilled, LeftOutlined, RightOutlined,
-  CheckOutlined, BookOutlined, FlagOutlined,
+  CheckOutlined, BookOutlined, FlagOutlined, HomeOutlined,
 } from '@ant-design/icons'
 import type { Question, FeedbackMode } from '../types'
 
@@ -16,9 +16,10 @@ interface Props {
   questions: Question[]
   feedbackMode: FeedbackMode
   onSubmit: (answers: Record<number, string>) => void
+  onGoHome: () => void
 }
 
-export default function QuizPage({ questions, feedbackMode, onSubmit }: Props) {
+export default function QuizPage({ questions, feedbackMode, onSubmit, onGoHome }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<number, string>>({})
   const [checked, setChecked] = useState<Set<number>>(new Set())
@@ -158,18 +159,36 @@ export default function QuizPage({ questions, feedbackMode, onSubmit }: Props) {
           boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
         }}
       >
-        <Space>
+        <Space
+          style={{ cursor: 'pointer' }}
+          onClick={onGoHome}
+          title="Back to Home"
+        >
           <BookOutlined style={{ color: '#fff', fontSize: 18 }} />
           <Text style={{ color: '#fff', fontSize: 16, fontWeight: 600 }}>
-            Quiz
+            Quiz App
           </Text>
-          <Text style={{ color: 'rgba(255,255,255,0.75)', fontSize: 13 }}>
-            International Economics
+          <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>
+            / Quiz Mode
           </Text>
         </Space>
-        <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: 13 }}>
-          {answeredCount} / {questions.length} answered
-        </Text>
+        <Space>
+          <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: 13 }}>
+            {answeredCount} / {questions.length} answered
+          </Text>
+          <Button
+            icon={<HomeOutlined />}
+            size="small"
+            onClick={onGoHome}
+            style={{
+              background: 'rgba(255,255,255,0.15)',
+              borderColor: 'rgba(255,255,255,0.3)',
+              color: '#fff',
+            }}
+          >
+            Home
+          </Button>
+        </Space>
       </div>
 
       {/* Progress bar */}
