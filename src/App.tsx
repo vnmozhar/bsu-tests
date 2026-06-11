@@ -13,22 +13,9 @@ import {
   startQuizSession,
   endQuizSession,
 } from './utils/sessions'
+import { shuffleOptions } from './utils/shuffle'
 
 const allQuestions = questionsData as Question[]
-
-const LABELS = ['a', 'b', 'c', 'd', 'e', 'f']
-
-function shuffleOptions(q: Question): Question {
-  const entries = Object.entries(q.options).sort(() => Math.random() - 0.5)
-  const newOptions: Record<string, string> = {}
-  let newCorrectAnswer = ''
-  entries.forEach(([originalKey, text], idx) => {
-    const label = LABELS[idx]
-    newOptions[label] = text
-    if (originalKey === q.correct_answer) newCorrectAnswer = label
-  })
-  return { ...q, options: newOptions, correct_answer: newCorrectAnswer }
-}
 
 type View = 'home' | 'learn' | 'setup' | 'quiz' | 'results'
 

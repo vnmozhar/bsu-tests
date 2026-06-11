@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Card, Typography, Space, Tag, Divider, Button, Row, Col } from 'antd'
 import { CheckCircleFilled, HomeOutlined, BookOutlined, BulbOutlined } from '@ant-design/icons'
 import type { Question } from '../types'
 import questionsData from '../data/questions.json'
 import explanationsData from '../data/explanations.json'
+import { shuffleOptions } from '../utils/shuffle'
 
-const allQuestions = [...(questionsData as Question[])].sort((a, b) => a.id - b.id)
+const sortedQuestions = [...(questionsData as Question[])].sort((a, b) => a.id - b.id)
 
 const explanationMap = new Map(
   (explanationsData as { id: number; explanation: string }[]).map((e) => [e.id, e.explanation])
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export default function LearnPage({ onGoHome }: Props) {
+  const allQuestions = useMemo(() => sortedQuestions.map(shuffleOptions), [])
   const [expanded, setExpanded] = useState<number[]>([])
 
   const toggleExplanation = (id: number) => {
