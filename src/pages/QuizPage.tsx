@@ -104,25 +104,6 @@ export default function QuizPage({ questions, feedbackMode, onSubmit }: Props) {
         </div>
       )}
 
-      <Divider style={{ margin: '12px 0' }} />
-
-      <Button
-        type="primary"
-        danger
-        block
-        size="small"
-        onClick={() => onSubmit(answers)}
-        disabled={!allAnswered}
-        style={{ fontWeight: 600 }}
-      >
-        Finish attempt
-      </Button>
-
-      {!allAnswered && (
-        <Text type="secondary" style={{ fontSize: 11, display: 'block', marginTop: 6, textAlign: 'center' }}>
-          {questions.length - answeredCount} question{questions.length - answeredCount !== 1 ? 's' : ''} remaining
-        </Text>
-      )}
     </Card>
   )
 
@@ -229,7 +210,7 @@ export default function QuizPage({ questions, feedbackMode, onSubmit }: Props) {
                 }}
               >
                 <Text style={{ fontSize: 13, color: '#1677ff', fontWeight: 500 }}>
-                  Multiple choice
+                  Select correct answer
                 </Text>
               </div>
 
@@ -343,25 +324,24 @@ export default function QuizPage({ questions, feedbackMode, onSubmit }: Props) {
                 >
                   Previous
                 </Button>
-                <Button
-                  type="primary"
-                  onClick={() => setCurrentIndex((i) => i + 1)}
-                  disabled={currentIndex === questions.length - 1}
-                  iconPosition="end"
-                  icon={<RightOutlined />}
-                >
-                  Next
-                </Button>
-                {/* Finish button inline for mobile */}
-                {!isDesktop && (
+                {currentIndex < questions.length - 1 ? (
+                  <Button
+                    type="primary"
+                    onClick={() => setCurrentIndex((i) => i + 1)}
+                    iconPosition="end"
+                    icon={<RightOutlined />}
+                  >
+                    Next
+                  </Button>
+                ) : (
                   <Button
                     type="primary"
                     danger
                     disabled={!allAnswered}
                     onClick={() => onSubmit(answers)}
-                    style={{ marginLeft: 'auto' }}
+                    style={{ marginLeft: !isDesktop ? 'auto' : undefined }}
                   >
-                    Finish
+                    Finish attempt
                   </Button>
                 )}
               </div>

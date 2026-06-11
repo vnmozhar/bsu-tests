@@ -60,3 +60,25 @@ src/
 - [Vite 5](https://vitejs.dev)
 - [Ant Design 5](https://ant.design)
 - TypeScript
+
+
+##
+1. Initialize and commit locally
+
+
+git init
+git add .
+git commit -m "Initial commit: quiz app with antd + vite"
+2. Create the GitHub repo and push — pick one option:
+
+Option A — GitHub CLI (easiest):
+
+
+gh repo create quiz-app --public --push --source=.
+Option B — manual (if you already created a repo on github.com):
+
+
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git branch -M main
+git push -u origin main
+After it's on GitHub, connect it in the Vercel dashboard — import the repo, Vercel auto-detects Vite and uses the vercel.json settings. No extra config needed.
