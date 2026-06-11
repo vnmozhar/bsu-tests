@@ -16,6 +16,20 @@ import {
 
 const allQuestions = questionsData as Question[]
 
+const LABELS = ['a', 'b', 'c', 'd', 'e', 'f']
+
+function shuffleOptions(q: Question): Question {
+  const entries = Object.entries(q.options).sort(() => Math.random() - 0.5)
+  const newOptions: Record<string, string> = {}
+  let newCorrectAnswer = ''
+  entries.forEach(([originalKey, text], idx) => {
+    const label = LABELS[idx]
+    newOptions[label] = text
+    if (originalKey === q.correct_answer) newCorrectAnswer = label
+  })
+  return { ...q, options: newOptions, correct_answer: newCorrectAnswer }
+}
+
 type View = 'home' | 'learn' | 'setup' | 'quiz' | 'results'
 
 export default function App() {
@@ -43,12 +57,7 @@ export default function App() {
   const handleStart = (count: number, mode: FeedbackMode) => {
     sessionId.current = startQuizSession({ questionCount: count, feedbackMode: mode })
     const shuffled = [...allQuestions].sort(() => Math.random() - 0.5)
-    setQuestions(shuffled.slice(0, count).map((q) => ({
-      ...q,
-      options: Object.fromEntries(
-        Object.entries(q.options).sort(() => Math.random() - 0.5)
-      ),
-    })))
+    setQuestions(shuffled.slice(0, count).map(shuffleOptions))
     setFeedbackMode(mode)
     setFinalAnswers({})
     setView('quiz')
