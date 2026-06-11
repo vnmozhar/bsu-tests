@@ -1,5 +1,7 @@
-import { Card, Typography, Space, Row, Col } from 'antd'
-import { ReadOutlined, TrophyOutlined, BookOutlined, RightOutlined } from '@ant-design/icons'
+import { useState } from 'react'
+import { Card, Typography, Space, Row, Col, Button, Tooltip } from 'antd'
+import { ReadOutlined, TrophyOutlined, BookOutlined, RightOutlined, HistoryOutlined } from '@ant-design/icons'
+import SessionsDrawer from '../components/SessionsDrawer'
 
 const { Title, Text, Paragraph } = Typography
 
@@ -10,6 +12,8 @@ interface Props {
 }
 
 export default function HomePage({ total, onSelectLearn, onSelectQuiz }: Props) {
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
   return (
     <div
       style={{
@@ -20,8 +24,29 @@ export default function HomePage({ total, onSelectLearn, onSelectQuiz }: Props) 
         alignItems: 'center',
         justifyContent: 'center',
         padding: 24,
+        position: 'relative',
       }}
     >
+      {/* Sessions history icon — top right */}
+      <Tooltip title="Session history" placement="left">
+        <Button
+          shape="circle"
+          icon={<HistoryOutlined />}
+          onClick={() => setDrawerOpen(true)}
+          style={{
+            position: 'absolute',
+            top: 20,
+            right: 20,
+            background: 'rgba(255,255,255,0.15)',
+            borderColor: 'rgba(255,255,255,0.35)',
+            color: '#fff',
+            fontSize: 18,
+            width: 42,
+            height: 42,
+          }}
+        />
+      </Tooltip>
+
       {/* App title */}
       <Space direction="vertical" align="center" size={4} style={{ marginBottom: 48 }}>
         <BookOutlined style={{ fontSize: 52, color: '#fff' }} />
@@ -137,6 +162,8 @@ export default function HomePage({ total, onSelectLearn, onSelectQuiz }: Props) 
           </Card>
         </Col>
       </Row>
+
+      <SessionsDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
     </div>
   )
 }
