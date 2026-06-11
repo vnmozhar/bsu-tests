@@ -1,11 +1,17 @@
+import { useState } from 'react'
 import {
   Card, Button, Typography, Progress, Space, Tag, Divider, Row, Col, Statistic,
 } from 'antd'
 import {
   CheckCircleFilled, CloseCircleFilled, TrophyOutlined, ReloadOutlined,
-  CheckOutlined, CloseOutlined, HomeOutlined, BookOutlined,
+  CheckOutlined, CloseOutlined, HomeOutlined, BookOutlined, BulbOutlined,
 } from '@ant-design/icons'
 import type { Question } from '../types'
+import explanationsData from '../data/explanations.json'
+
+const explanationMap = new Map(
+  (explanationsData as { id: number; explanation: string }[]).map((e) => [e.id, e.explanation])
+)
 
 const { Title, Text, Paragraph } = Typography
 
@@ -24,6 +30,11 @@ function getGrade(percent: number): { label: string; color: string } {
 }
 
 export default function ResultsPage({ questions, answers, onRestart, onGoHome }: Props) {
+  const [expandedExpl, setExpandedExpl] = useState<number[]>([])
+
+  const toggleExpl = (id: number) =>
+    setExpandedExpl((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id])
+
   const correctCount = questions.filter((q) => answers[q.id] === q.correct_answer).length
   const total = questions.length
   const percent = Math.round((correctCount / total) * 100)
@@ -274,6 +285,42 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
                             {q.correct_answer}. {q.options[q.correct_answer]}
                           </Text>
                         </Text>
+                      </div>
+                    )}
+
+                    {/* Explanation toggle */}
+                    {explanationMap.get(q.id) && (
+                      <div style={{ marginTop: 10 }}>
+                        <Button
+                          type="text"
+                          size="small"
+                          icon={<BulbOutlined style={{ color: '#fa8c16' }} />}
+                          onClick={() => toggleExpl(q.id)}
+                          style={{
+                            padding: '0 4px',
+                            color: expandedExpl.includes(q.id) ? '#fa8c16' : '#8c8c8c',
+                            fontWeight: 500,
+                          }}
+                        >
+                          {expandedExpl.includes(q.id) ? 'Hide explanation' : 'Show explanation'}
+                        </Button>
+
+                        {expandedExpl.includes(q.id) && (
+                          <div
+                            style={{
+                              marginTop: 8,
+                              padding: '12px 14px',
+                              background: '#fffbe6',
+                              border: '1px solid #ffe58f',
+                              borderLeft: '3px solid #fa8c16',
+                              borderRadius: 6,
+                            }}
+                          >
+                            <Text style={{ fontSize: 13, color: '#614700', lineHeight: 1.7 }}>
+                              {explanationMap.get(q.id)}
+                            </Text>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

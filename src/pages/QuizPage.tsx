@@ -5,9 +5,14 @@ import {
 } from 'antd'
 import {
   CheckCircleFilled, CloseCircleFilled, LeftOutlined, RightOutlined,
-  CheckOutlined, BookOutlined, FlagOutlined, HomeOutlined,
+  CheckOutlined, BookOutlined, FlagOutlined, HomeOutlined, BulbOutlined,
 } from '@ant-design/icons'
 import type { Question, FeedbackMode } from '../types'
+import explanationsData from '../data/explanations.json'
+
+const explanationMap = new Map(
+  (explanationsData as { id: number; explanation: string }[]).map((e) => [e.id, e.explanation])
+)
 
 const { Text, Paragraph } = Typography
 const { useBreakpoint } = Grid
@@ -305,24 +310,46 @@ export default function QuizPage({ questions, feedbackMode, onSubmit, onGoHome }
                 </Space>
               </Radio.Group>
 
-              {/* Feedback alert (live mode) */}
+              {/* Feedback alert + explanation (live mode) */}
               {feedbackMode === 'live' && isCurrentChecked && (
-                <Alert
-                  style={{ marginTop: 16 }}
-                  type={isCurrentCorrect ? 'success' : 'error'}
-                  showIcon
-                  message={
-                    isCurrentCorrect
-                      ? 'Correct! Well done.'
-                      : (
-                        <span>
-                          Incorrect.{' '}
-                          <strong>Correct answer: {currentQuestion.correct_answer}.</strong>{' '}
-                          {currentQuestion.options[currentQuestion.correct_answer]}
-                        </span>
-                      )
-                  }
-                />
+                <>
+                  <Alert
+                    style={{ marginTop: 16 }}
+                    type={isCurrentCorrect ? 'success' : 'error'}
+                    showIcon
+                    message={
+                      isCurrentCorrect
+                        ? 'Correct! Well done.'
+                        : (
+                          <span>
+                            Incorrect.{' '}
+                            <strong>Correct answer: {currentQuestion.correct_answer}.</strong>{' '}
+                            {currentQuestion.options[currentQuestion.correct_answer]}
+                          </span>
+                        )
+                    }
+                  />
+                  {explanationMap.get(currentQuestion.id) && (
+                    <div
+                      style={{
+                        marginTop: 10,
+                        padding: '12px 14px',
+                        background: '#fffbe6',
+                        border: '1px solid #ffe58f',
+                        borderLeft: '3px solid #fa8c16',
+                        borderRadius: 6,
+                      }}
+                    >
+                      <Space style={{ marginBottom: 4 }}>
+                        <BulbOutlined style={{ color: '#fa8c16' }} />
+                        <Text style={{ fontSize: 12, fontWeight: 600, color: '#874d00' }}>Explanation</Text>
+                      </Space>
+                      <Text style={{ fontSize: 13, color: '#614700', lineHeight: 1.7, display: 'block' }}>
+                        {explanationMap.get(currentQuestion.id)}
+                      </Text>
+                    </div>
+                  )}
+                </>
               )}
 
               {/* Action buttons */}
