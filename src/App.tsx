@@ -43,7 +43,12 @@ export default function App() {
   const handleStart = (count: number, mode: FeedbackMode) => {
     sessionId.current = startQuizSession({ questionCount: count, feedbackMode: mode })
     const shuffled = [...allQuestions].sort(() => Math.random() - 0.5)
-    setQuestions(shuffled.slice(0, count))
+    setQuestions(shuffled.slice(0, count).map((q) => ({
+      ...q,
+      options: Object.fromEntries(
+        Object.entries(q.options).sort(() => Math.random() - 0.5)
+      ),
+    })))
     setFeedbackMode(mode)
     setFinalAnswers({})
     setView('quiz')
