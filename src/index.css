@@ -1,0 +1,61 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.quiz-nav-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 4px;
+  border: 2px solid;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: transform 0.1s, box-shadow 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+}
+
+.quiz-nav-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.quiz-option-row {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  margin-bottom: 4px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.quiz-option-row:hover:not(.disabled) {
+  background: #f0f7ff;
+  border-color: #91caff;
+}
+
+.quiz-option-row.correct {
+  background: #f6ffed;
+  border-color: #b7eb8f;
+}
+
+.quiz-option-row.wrong {
+  background: #fff2f0;
+  border-color: #ffa39e;
+}
+
+.quiz-option-row.disabled {
+  cursor: default;
+}
