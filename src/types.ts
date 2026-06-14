@@ -3,6 +3,7 @@ export interface Question {
   question: string;
   options: Record<string, string>;
   correct_answer: string;
+  explanation: string;
 }
 
 export type FeedbackMode = 'live' | 'end';

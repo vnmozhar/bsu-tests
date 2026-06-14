@@ -8,11 +8,6 @@ import {
   CheckOutlined, BookOutlined, FlagOutlined, HomeOutlined, BulbOutlined,
 } from '@ant-design/icons'
 import type { Question, FeedbackMode } from '../types'
-import explanationsData from '../data/explanations.json'
-
-const explanationMap = new Map(
-  (explanationsData as { id: number; explanation: string }[]).map((e) => [e.id, e.explanation])
-)
 
 const { Text, Paragraph } = Typography
 const { useBreakpoint } = Grid
@@ -329,7 +324,7 @@ export default function QuizPage({ questions, feedbackMode, onSubmit, onGoHome }
                         )
                     }
                   />
-                  {explanationMap.get(currentQuestion.id) && (
+                  {currentQuestion.explanation && (
                     <div
                       style={{
                         marginTop: 10,
@@ -345,7 +340,7 @@ export default function QuizPage({ questions, feedbackMode, onSubmit, onGoHome }
                         <Text style={{ fontSize: 12, fontWeight: 600, color: '#874d00' }}>Explanation</Text>
                       </Space>
                       <Text style={{ fontSize: 13, color: '#614700', lineHeight: 1.7, display: 'block' }}>
-                        {explanationMap.get(currentQuestion.id)}
+                        {currentQuestion.explanation}
                       </Text>
                     </div>
                   )}

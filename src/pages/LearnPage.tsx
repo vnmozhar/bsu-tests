@@ -3,14 +3,9 @@ import { Card, Typography, Space, Tag, Divider, Button, Row, Col } from 'antd'
 import { CheckCircleFilled, HomeOutlined, BookOutlined, BulbOutlined } from '@ant-design/icons'
 import type { Question } from '../types'
 import questionsData from '../data/questions.json'
-import explanationsData from '../data/explanations.json'
 import { shuffleOptions } from '../utils/shuffle'
 
 const sortedQuestions = [...(questionsData as Question[])].sort((a, b) => a.id - b.id)
-
-const explanationMap = new Map(
-  (explanationsData as { id: number; explanation: string }[]).map((e) => [e.id, e.explanation])
-)
 
 const { Title, Text, Paragraph } = Typography
 
@@ -83,7 +78,7 @@ export default function LearnPage({ onGoHome }: Props) {
         {/* Questions list */}
         <Space direction="vertical" size={12} style={{ width: '100%' }}>
           {allQuestions.map((q, idx) => {
-            const explanation = explanationMap.get(q.id)
+            const explanation = q.explanation
             const isExpanded = expanded.includes(q.id)
 
             return (

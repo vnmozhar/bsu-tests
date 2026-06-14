@@ -7,11 +7,6 @@ import {
   CheckOutlined, CloseOutlined, HomeOutlined, BookOutlined, BulbOutlined,
 } from '@ant-design/icons'
 import type { Question } from '../types'
-import explanationsData from '../data/explanations.json'
-
-const explanationMap = new Map(
-  (explanationsData as { id: number; explanation: string }[]).map((e) => [e.id, e.explanation])
-)
 
 const { Title, Text, Paragraph } = Typography
 
@@ -289,7 +284,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
                     )}
 
                     {/* Explanation toggle */}
-                    {explanationMap.get(q.id) && (
+                    {q.explanation && (
                       <div style={{ marginTop: 10 }}>
                         <Button
                           type="text"
@@ -317,7 +312,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
                             }}
                           >
                             <Text style={{ fontSize: 13, color: '#614700', lineHeight: 1.7 }}>
-                              {explanationMap.get(q.id)}
+                              {q.explanation}
                             </Text>
                           </div>
                         )}
