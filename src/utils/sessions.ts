@@ -17,6 +17,8 @@ export interface QuizSession {
   setup: {
     questionCount: number
     feedbackMode: 'live' | 'end'
+    secondsPerQuestion: number
+    source: string
   }
   result?: {
     correct: number
@@ -103,7 +105,11 @@ export function toLogText(sessions: Session[]): string {
         const score = q.result
           ? `score: ${q.result.correct}/${q.result.total} (${q.result.percent}%)`
           : 'abandoned'
-        return `${date} | QUIZ | questions: ${q.setup.questionCount} | mode: ${q.setup.feedbackMode} | ${score} | duration: ${formatDuration(q.duration)}`
+        return (
+          `${date} | QUIZ | source: ${q.setup.source} | questions: ${q.setup.questionCount}` +
+          ` | mode: ${q.setup.feedbackMode} | timer: ${q.setup.secondsPerQuestion}s` +
+          ` | ${score} | duration: ${formatDuration(q.duration)}`
+        )
       })
       .join('\n') + '\n'
   )

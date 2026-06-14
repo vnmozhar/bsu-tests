@@ -6,7 +6,6 @@ import SetupPage from './pages/SetupPage'
 import QuizPage from './pages/QuizPage'
 import ResultsPage from './pages/ResultsPage'
 import type { Question, FeedbackMode } from './types'
-import questionsData from './data/questions.json'
 import {
   startLearnSession,
   endLearnSession,
@@ -14,8 +13,7 @@ import {
   endQuizSession,
 } from './utils/sessions'
 import { shuffleOptions } from './utils/shuffle'
-
-const allQuestions = questionsData as Question[]
+import { getSourceByKey } from './utils/questionSources'
 
 type View = 'home' | 'learn' | 'setup' | 'quiz' | 'results'
 
@@ -23,14 +21,14 @@ export default function App() {
   const [view, setView] = useState<View>('home')
   const [questions, setQuestions] = useState<Question[]>([])
   const [feedbackMode, setFeedbackMode] = useState<FeedbackMode>('end')
+  const [secondsPerQuestion, setSecondsPerQuestion] = useState(30)
   const [finalAnswers, setFinalAnswers] = useState<Record<number, string>>({})
   const sessionId = useRef<string | null>(null)
 
   const goHome = () => {
-    // End any active session
     if (sessionId.current) {
       if (view === 'learn') endLearnSession(sessionId.current)
-      else if (view === 'quiz') endQuizSession(sessionId.current) // abandoned
+      else if (view === 'quiz') endQuizSession(sessionId.current)
       sessionId.current = null
     }
     setView('home')
@@ -41,11 +39,23 @@ export default function App() {
     setView('learn')
   }
 
-  const handleStart = (count: number, mode: FeedbackMode) => {
-    sessionId.current = startQuizSession({ questionCount: count, feedbackMode: mode })
-    const shuffled = [...allQuestions].sort(() => Math.random() - 0.5)
+  const handleStart = (
+    count: number,
+    mode: FeedbackMode,
+    secPerQuestion: number,
+    sourceKey: string
+  ) => {
+    const source = getSourceByKey(sourceKey)
+    sessionId.current = startQuizSession({
+      questionCount: count,
+      feedbackMode: mode,
+      secondsPerQuestion: secPerQuestion,
+      source: source.label,
+    })
+    const shuffled = [...source.questions].sort(() => Math.random() - 0.5)
     setQuestions(shuffled.slice(0, count).map(shuffleOptions))
     setFeedbackMode(mode)
+    setSecondsPerQuestion(secPerQuestion)
     setFinalAnswers({})
     setView('quiz')
   }
@@ -73,19 +83,17 @@ export default function App() {
     >
       {view === 'home' && (
         <HomePage
-          total={allQuestions.length}
           onSelectLearn={handleSelectLearn}
           onSelectQuiz={() => setView('setup')}
         />
       )}
       {view === 'learn' && <LearnPage onGoHome={goHome} />}
-      {view === 'setup' && (
-        <SetupPage total={allQuestions.length} onStart={handleStart} onGoHome={goHome} />
-      )}
+      {view === 'setup' && <SetupPage onStart={handleStart} onGoHome={goHome} />}
       {view === 'quiz' && (
         <QuizPage
           questions={questions}
           feedbackMode={feedbackMode}
+          secondsPerQuestion={secondsPerQuestion}
           onSubmit={handleSubmit}
           onGoHome={goHome}
         />

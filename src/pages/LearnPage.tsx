@@ -1,11 +1,8 @@
-import { useState, useMemo } from 'react'
-import { Card, Typography, Space, Tag, Divider, Button, Row, Col } from 'antd'
-import { CheckCircleFilled, HomeOutlined, BookOutlined, BulbOutlined } from '@ant-design/icons'
-import type { Question } from '../types'
-import questionsData from '../data/questions.json'
+import { useState, useMemo, useEffect } from 'react'
+import { Card, Typography, Space, Divider, Button, Row, Col, Select } from 'antd'
+import { CheckCircleFilled, HomeOutlined, BookOutlined, BulbOutlined, DatabaseOutlined } from '@ant-design/icons'
+import { questionSources, getSourceByKey } from '../utils/questionSources'
 import { shuffleOptions } from '../utils/shuffle'
-
-const sortedQuestions = [...(questionsData as Question[])].sort((a, b) => a.id - b.id)
 
 const { Title, Text, Paragraph } = Typography
 
@@ -13,9 +10,24 @@ interface Props {
   onGoHome: () => void
 }
 
+const sourceOptions = questionSources.map((s) => ({
+  value: s.key,
+  label: `${s.label} (${s.count})`,
+}))
+
 export default function LearnPage({ onGoHome }: Props) {
-  const allQuestions = useMemo(() => sortedQuestions.map(shuffleOptions), [])
+  const [sourceKey, setSourceKey] = useState('all')
   const [expanded, setExpanded] = useState<number[]>([])
+
+  // Reset expanded explanations when source changes
+  useEffect(() => {
+    setExpanded([])
+  }, [sourceKey])
+
+  const displayQuestions = useMemo(
+    () => getSourceByKey(sourceKey).questions.map(shuffleOptions),
+    [sourceKey]
+  )
 
   const toggleExplanation = (id: number) => {
     setExpanded((prev) =>
@@ -57,27 +69,31 @@ export default function LearnPage({ onGoHome }: Props) {
       <div style={{ flex: 1, padding: '24px 20px', maxWidth: 900, margin: '0 auto', width: '100%' }}>
         {/* Page title */}
         <Card style={{ marginBottom: 20, borderRadius: 10 }} styles={{ body: { padding: '20px 24px' } }}>
-          <Row align="middle" justify="space-between">
-            <Col>
+          <Row align="middle" justify="space-between" gutter={16} wrap={false}>
+            <Col flex="auto">
               <Title level={3} style={{ margin: 0, marginBottom: 4 }}>
                 All Questions &amp; Answers
               </Title>
               <Text type="secondary" style={{ fontSize: 13 }}>
-                {allQuestions.length} questions · Correct answers highlighted in green · Click{' '}
+                {displayQuestions.length} questions · Correct answers highlighted in green · Click{' '}
                 <BulbOutlined style={{ color: '#fa8c16' }} /> for explanation
               </Text>
             </Col>
             <Col>
-              <Tag color="blue" style={{ fontSize: 14, padding: '4px 12px' }}>
-                {allQuestions.length} questions
-              </Tag>
+              <Select
+                value={sourceKey}
+                onChange={setSourceKey}
+                options={sourceOptions}
+                style={{ minWidth: 180 }}
+                suffixIcon={<DatabaseOutlined />}
+              />
             </Col>
           </Row>
         </Card>
 
         {/* Questions list */}
         <Space direction="vertical" size={12} style={{ width: '100%' }}>
-          {allQuestions.map((q, idx) => {
+          {displayQuestions.map((q, idx) => {
             const explanation = q.explanation
             const isExpanded = expanded.includes(q.id)
 

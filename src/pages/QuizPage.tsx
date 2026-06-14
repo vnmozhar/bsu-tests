@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import {
   Card, Radio, Button, Space, Typography, Progress, Tag, Alert,
   Divider, Row, Col, Grid,
@@ -6,6 +6,7 @@ import {
 import {
   CheckCircleFilled, CloseCircleFilled, LeftOutlined, RightOutlined,
   CheckOutlined, BookOutlined, FlagOutlined, HomeOutlined, BulbOutlined,
+  ClockCircleOutlined,
 } from '@ant-design/icons'
 import type { Question, FeedbackMode } from '../types'
 
@@ -15,16 +16,49 @@ const { useBreakpoint } = Grid
 interface Props {
   questions: Question[]
   feedbackMode: FeedbackMode
+  secondsPerQuestion: number
   onSubmit: (answers: Record<number, string>) => void
   onGoHome: () => void
 }
 
-export default function QuizPage({ questions, feedbackMode, onSubmit, onGoHome }: Props) {
+export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, onSubmit, onGoHome }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<number, string>>({})
   const [checked, setChecked] = useState<Set<number>>(new Set())
+  const [timeLeft, setTimeLeft] = useState(secondsPerQuestion)
   const screens = useBreakpoint()
   const isDesktop = !!screens.lg
+
+  // Stable refs to avoid stale closures in timer effects
+  const answersRef = useRef(answers)
+  const onSubmitRef = useRef(onSubmit)
+  useEffect(() => { answersRef.current = answers }, [answers])
+  useEffect(() => { onSubmitRef.current = onSubmit }, [onSubmit])
+
+  // Reset timer when question changes
+  useEffect(() => {
+    setTimeLeft(secondsPerQuestion)
+  }, [currentIndex, secondsPerQuestion])
+
+  // Count down every second
+  useEffect(() => {
+    if (timeLeft <= 0) return
+    const id = setTimeout(() => setTimeLeft((t) => t - 1), 1000)
+    return () => clearTimeout(id)
+  }, [timeLeft])
+
+  // Auto-advance when time runs out.
+  // This effect only fires when timeLeft *changes* — not when currentIndex changes —
+  // so there is no double-advance risk even though timeLeft is 0 across the index bump.
+  useEffect(() => {
+    if (timeLeft !== 0) return
+    setCurrentIndex((ci) => {
+      if (ci < questions.length - 1) return ci + 1
+      onSubmitRef.current(answersRef.current)
+      return ci
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeLeft])
 
   const currentQuestion = questions[currentIndex]
   const currentAnswer = answers[currentQuestion.id]
@@ -34,6 +68,12 @@ export default function QuizPage({ questions, feedbackMode, onSubmit, onGoHome }
   const answeredCount = Object.keys(answers).length
   const allAnswered = answeredCount === questions.length
   const progressPercent = Math.round((answeredCount / questions.length) * 100)
+
+  // Timer color: green → orange → red as time runs out
+  const timerRatio = secondsPerQuestion > 0 ? timeLeft / secondsPerQuestion : 1
+  const timerColor =
+    timerRatio > 0.5 ? '#52c41a' : timerRatio > 0.25 ? '#fa8c16' : '#ff4d4f'
+  const timerUrgent = timerRatio <= 0.25
 
   const handleAnswer = useCallback((questionId: number, value: string) => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }))
@@ -104,7 +144,6 @@ export default function QuizPage({ questions, feedbackMode, onSubmit, onGoHome }
           <Tag color="error" style={{ margin: 0, fontSize: 11 }}>Wrong</Tag>
         </div>
       )}
-
     </Card>
   )
 
@@ -218,7 +257,7 @@ export default function QuizPage({ questions, feedbackMode, onSubmit, onGoHome }
               styles={{ body: { padding: '28px 32px' } }}
               style={{ marginBottom: 16 }}
             >
-              {/* Section header (like Moodle's question type header) */}
+              {/* Section header with timer */}
               <div
                 style={{
                   background: '#e8f4f8',
@@ -226,14 +265,31 @@ export default function QuizPage({ questions, feedbackMode, onSubmit, onGoHome }
                   padding: '12px 24px',
                   borderBottom: '1px solid #c9e6f0',
                   borderRadius: '6px 6px 0 0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
                 }}
               >
                 <Text style={{ fontSize: 13, color: '#1677ff', fontWeight: 500 }}>
                   Select correct answer
                 </Text>
+                <Space size={4}>
+                  <ClockCircleOutlined style={{ color: timerColor, fontSize: 13 }} />
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontWeight: timerUrgent ? 700 : 500,
+                      color: timerColor,
+                      minWidth: 32,
+                      textAlign: 'right',
+                    }}
+                  >
+                    {timeLeft}s
+                  </Text>
+                </Space>
               </div>
 
-              {/* Question number badge */}
+              {/* Question number badge + text */}
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 20 }}>
                 <div
                   style={{

@@ -1,28 +1,47 @@
 import { useState } from 'react'
 import {
-  Card, Button, InputNumber, Switch, Space, Typography, Divider, Slider, Row, Col,
+  Card, Button, InputNumber, Switch, Space, Typography, Divider, Slider, Row, Col, Select,
 } from 'antd'
 import {
   PlayCircleOutlined, BookOutlined, BulbOutlined, CheckCircleOutlined, ClockCircleOutlined,
-  HomeOutlined,
+  HomeOutlined, DatabaseOutlined,
 } from '@ant-design/icons'
 import type { FeedbackMode } from '../types'
+import { questionSources, getSourceByKey } from '../utils/questionSources'
 
 const { Title, Text, Paragraph } = Typography
 
 interface Props {
-  total: number
-  onStart: (count: number, mode: FeedbackMode) => void
+  onStart: (count: number, mode: FeedbackMode, secondsPerQuestion: number, sourceKey: string) => void
   onGoHome: () => void
 }
 
-export default function SetupPage({ total, onStart, onGoHome }: Props) {
-  const [count, setCount] = useState(Math.min(10, total))
+const sourceOptions = questionSources.map((s) => ({
+  value: s.key,
+  label: `${s.label} (${s.count})`,
+}))
+
+export default function SetupPage({ onStart, onGoHome }: Props) {
+  const [sourceKey, setSourceKey] = useState('all')
+  const [secondsPerQuestion, setSecondsPerQuestion] = useState(30)
   const [feedbackMode, setFeedbackMode] = useState<FeedbackMode>('end')
+
+  const source = getSourceByKey(sourceKey)
+  const total = source.count
+
+  const [count, setCount] = useState(Math.min(10, total))
+
+  const handleSourceChange = (key: string) => {
+    const newSource = getSourceByKey(key)
+    setSourceKey(key)
+    setCount((prev) => Math.min(prev, newSource.count))
+  }
 
   const handleCountChange = (value: number | null) => {
     if (value !== null) setCount(Math.max(1, Math.min(total, value)))
   }
+
+  const estimateMin = Math.ceil((count * secondsPerQuestion) / 60)
 
   return (
     <div
@@ -55,13 +74,29 @@ export default function SetupPage({ total, onStart, onGoHome }: Props) {
           <div style={{ textAlign: 'center', marginBottom: 28 }}>
             <BookOutlined style={{ fontSize: 52, color: '#1677ff', marginBottom: 12, display: 'block' }} />
             <Title level={2} style={{ margin: 0, color: '#1a1a2e' }}>Quiz App</Title>
-            <Text type="secondary" style={{ fontSize: 14 }}>International Economics · {total} questions</Text>
+            <Text type="secondary" style={{ fontSize: 14 }}>
+              {source.label} · {total} questions
+            </Text>
           </div>
 
           <Divider style={{ margin: '0 0 24px' }} />
 
+          {/* Question bank selector */}
+          <div style={{ marginBottom: 20 }}>
+            <Text strong style={{ display: 'block', marginBottom: 6, fontSize: 14 }}>
+              Question bank
+            </Text>
+            <Select
+              value={sourceKey}
+              onChange={handleSourceChange}
+              options={sourceOptions}
+              style={{ width: '100%' }}
+              suffixIcon={<DatabaseOutlined />}
+            />
+          </div>
+
           {/* Question count */}
-          <div style={{ marginBottom: 24 }}>
+          <div style={{ marginBottom: 20 }}>
             <Text strong style={{ display: 'block', marginBottom: 6, fontSize: 14 }}>
               Number of questions
             </Text>
@@ -91,6 +126,37 @@ export default function SetupPage({ total, onStart, onGoHome }: Props) {
                   value={count}
                   onChange={handleCountChange}
                   style={{ width: 72 }}
+                />
+              </Col>
+            </Row>
+          </div>
+
+          {/* Seconds per question */}
+          <div style={{ marginBottom: 20 }}>
+            <Text strong style={{ display: 'block', marginBottom: 6, fontSize: 14 }}>
+              Seconds per question
+            </Text>
+            <Row gutter={16} align="middle">
+              <Col flex="auto">
+                <Slider
+                  min={5}
+                  max={120}
+                  step={5}
+                  value={secondsPerQuestion}
+                  onChange={setSecondsPerQuestion}
+                  tooltip={{ formatter: (v) => `${v}s` }}
+                  marks={{ 5: '5s', 30: '30s', 60: '1m', 120: '2m' }}
+                />
+              </Col>
+              <Col>
+                <InputNumber
+                  min={5}
+                  max={120}
+                  step={5}
+                  value={secondsPerQuestion}
+                  onChange={(v) => v !== null && setSecondsPerQuestion(v)}
+                  style={{ width: 72 }}
+                  addonAfter="s"
                 />
               </Col>
             </Row>
@@ -168,7 +234,7 @@ export default function SetupPage({ total, onStart, onGoHome }: Props) {
               >
                 <ClockCircleOutlined style={{ color: '#722ed1', fontSize: 18, marginBottom: 4, display: 'block' }} />
                 <Text style={{ fontSize: 12, color: '#531dab' }}>
-                  ~{Math.ceil(count * 0.5)} min estimate
+                  ~{estimateMin} min estimate
                 </Text>
               </div>
             </Col>
@@ -180,7 +246,7 @@ export default function SetupPage({ total, onStart, onGoHome }: Props) {
             size="large"
             block
             icon={<PlayCircleOutlined />}
-            onClick={() => onStart(count, feedbackMode)}
+            onClick={() => onStart(count, feedbackMode, secondsPerQuestion, sourceKey)}
             style={{ height: 50, fontSize: 16, borderRadius: 8 }}
           >
             Start Quiz

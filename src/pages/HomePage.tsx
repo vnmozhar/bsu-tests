@@ -2,16 +2,17 @@ import { useState } from 'react'
 import { Card, Typography, Space, Row, Col, Button, Tooltip } from 'antd'
 import { ReadOutlined, TrophyOutlined, BookOutlined, RightOutlined, HistoryOutlined } from '@ant-design/icons'
 import SessionsDrawer from '../components/SessionsDrawer'
+import { questionSources } from '../utils/questionSources'
 
 const { Title, Text, Paragraph } = Typography
 
 interface Props {
-  total: number
   onSelectLearn: () => void
   onSelectQuiz: () => void
 }
 
-export default function HomePage({ total, onSelectLearn, onSelectQuiz }: Props) {
+export default function HomePage({ onSelectLearn, onSelectQuiz }: Props) {
+  const total = questionSources[0].count // 'all' source is always first
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
