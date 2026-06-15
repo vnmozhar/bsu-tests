@@ -260,14 +260,14 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
         <Space
           style={{ cursor: 'pointer' }}
           onClick={onGoHome}
-          title="Back to Home"
+          title="На главную"
         >
           <BookOutlined style={{ color: '#fff', fontSize: 18 }} />
           <Text style={{ color: '#fff', fontSize: 16, fontWeight: 600 }}>
-            Quiz App
+            Портал тестирования
           </Text>
           <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>
-            / Quiz Mode
+            / Режим тестирования
           </Text>
         </Space>
         <Space>
@@ -376,7 +376,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
               </div>
 
               <Text type="secondary" style={{ fontSize: 13, display: 'block', marginBottom: 10 }}>
-                {isMultiAnswer ? 'Select all that apply:' : 'Select one:'}
+                {isMultiAnswer ? 'Выберите все подходящие:' : 'Выберите один вариант:'}
               </Text>
 
               {/* Options */}
@@ -413,10 +413,10 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
                     showIcon
                     message={
                       isCurrentCorrect
-                        ? 'Correct! Well done.'
+                        ? 'Верно! Молодец.'
                         : (
                           <span>
-                            Incorrect.{' '}
+                            Неверно.{' '}
                             {Array.isArray(currentQuestion.correct_answer) ? (
                               <>
                                 <strong>
@@ -449,7 +449,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
                     >
                       <Space style={{ marginBottom: 4 }}>
                         <BulbOutlined style={{ color: '#fa8c16' }} />
-                        <Text style={{ fontSize: 12, fontWeight: 600, color: '#874d00' }}>Explanation</Text>
+                        <Text style={{ fontSize: 12, fontWeight: 600, color: '#874d00' }}>Объяснение</Text>
                       </Space>
                       <Text style={{ fontSize: 13, color: '#614700', lineHeight: 1.7, display: 'block' }}>
                         {currentQuestion.explanation}
@@ -467,7 +467,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
                     icon={<CheckOutlined />}
                     style={{ background: '#f0f7ff', borderColor: '#1677ff', color: '#1677ff' }}
                   >
-                    Check
+                    Проверить
                   </Button>
                 )}
                 <Button
@@ -475,7 +475,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
                   disabled={currentIndex === 0}
                   icon={<LeftOutlined />}
                 >
-                  Previous
+                  Назад
                 </Button>
                 {currentIndex < questions.length - 1 ? (
                   <Button

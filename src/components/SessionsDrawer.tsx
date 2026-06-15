@@ -39,7 +39,7 @@ export default function SessionsDrawer({ open, onClose }: Props) {
       title={
         <Space>
           <ClockCircleOutlined style={{ color: '#1677ff' }} />
-          <span>Session History</span>
+          <span>История попыток</span>
           {sessions.length > 0 && (
             <Tag color="blue" style={{ fontWeight: 400 }}>
               {sessions.length}
@@ -53,24 +53,24 @@ export default function SessionsDrawer({ open, onClose }: Props) {
       extra={
         sessions.length > 0 ? (
           <Space>
-            <Tooltip title="Download sessions.log">
+            <Tooltip title="Скачать sessions.log">
               <Button
                 icon={<DownloadOutlined />}
                 size="small"
                 onClick={handleDownload}
               >
-                Download .log
+                Скачать .log
               </Button>
             </Tooltip>
             <Popconfirm
-              title="Clear all sessions?"
-              description="This cannot be undone."
+              title="Очистить все попытки?"
+              description="Это действие необратимо."
               onConfirm={handleClear}
-              okText="Clear"
+              okText="Очистить"
               okButtonProps={{ danger: true }}
             >
               <Button icon={<DeleteOutlined />} size="small" danger>
-                Clear
+                Очистить
               </Button>
             </Popconfirm>
           </Space>
@@ -79,7 +79,7 @@ export default function SessionsDrawer({ open, onClose }: Props) {
     >
       {sessions.length === 0 ? (
         <Empty
-          description="No sessions recorded yet"
+          description="Нет записанных попыток"
           style={{ marginTop: 80 }}
         />
       ) : (
@@ -112,7 +112,7 @@ function SessionItem({ session, isFirst }: { session: Session; isFirst: boolean 
               color={isQuiz ? 'purple' : 'blue'}
               style={{ margin: 0, fontWeight: 600 }}
             >
-              {isQuiz ? 'QUIZ' : 'LEARN'}
+              {isQuiz ? 'ТЕСТ' : 'ОБУЧЕНИЕ'}
             </Tag>
           </Space>
           <Text type="secondary" style={{ fontSize: 12 }}>
@@ -133,16 +133,16 @@ function SessionItem({ session, isFirst }: { session: Session; isFirst: boolean 
             <Space direction="vertical" size={4} style={{ width: '100%' }}>
               <Space wrap>
                 <Text style={{ fontSize: 13 }}>
-                  <Text type="secondary">Questions: </Text>
+                  <Text type="secondary">Вопросов: </Text>
                   <Text strong>{q.setup.questionCount}</Text>
                 </Text>
                 <Text style={{ fontSize: 13 }}>
-                  <Text type="secondary">Mode: </Text>
+                  <Text type="secondary">Режим: </Text>
                   <Tag
                     color={q.setup.feedbackMode === 'live' ? 'orange' : 'default'}
                     style={{ margin: 0, fontSize: 11 }}
                   >
-                    {q.setup.feedbackMode}
+                    {q.setup.feedbackMode === 'live' ? 'По ходу' : 'В конце'}
                   </Tag>
                 </Text>
               </Space>
@@ -162,12 +162,12 @@ function SessionItem({ session, isFirst }: { session: Session; isFirst: boolean 
                   </Text>
                 </Space>
               ) : (
-                <Tag color="warning" style={{ margin: 0, fontSize: 11 }}>Abandoned</Tag>
+                <Tag color="warning" style={{ margin: 0, fontSize: 11 }}>Прервано</Tag>
               )}
             </Space>
           ) : (
             <Text type="secondary" style={{ fontSize: 13 }}>
-              Browsed all questions
+              Просмотрены все вопросы
             </Text>
           )}
 
@@ -175,7 +175,7 @@ function SessionItem({ session, isFirst }: { session: Session; isFirst: boolean 
 
           <Text type="secondary" style={{ fontSize: 12 }}>
             <ClockCircleOutlined style={{ marginRight: 4 }} />
-            Duration: <Text style={{ fontSize: 12 }}>{formatDuration(session.duration)}</Text>
+            Длительность: <Text style={{ fontSize: 12 }}>{formatDuration(session.duration)}</Text>
           </Text>
         </div>
       </div>

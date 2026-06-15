@@ -19,10 +19,10 @@ interface Props {
 }
 
 function getGrade(percent: number): { label: string; color: string } {
-  if (percent >= 90) return { label: 'Excellent!', color: '#52c41a' }
-  if (percent >= 75) return { label: 'Good!', color: '#1677ff' }
-  if (percent >= 60) return { label: 'Satisfactory', color: '#fa8c16' }
-  return { label: 'Needs improvement', color: '#ff4d4f' }
+  if (percent >= 90) return { label: 'Отлично!', color: '#52c41a' }
+  if (percent >= 75) return { label: 'Хорошо!', color: '#1677ff' }
+  if (percent >= 60) return { label: 'Удовлетворительно', color: '#fa8c16' }
+  return { label: 'Нужно улучшить', color: '#ff4d4f' }
 }
 
 export default function ResultsPage({ questions, answers, onRestart, onGoHome }: Props) {
@@ -53,8 +53,8 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
       >
         <Space style={{ cursor: 'pointer' }} onClick={onGoHome} title="На главную">
           <BookOutlined style={{ color: '#fff', fontSize: 18 }} />
-          <Text style={{ color: '#fff', fontSize: 16, fontWeight: 600 }}>Quiz App</Text>
-          <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>/ Results</Text>
+          <Text style={{ color: '#fff', fontSize: 16, fontWeight: 600 }}>Портал тестирования</Text>
+          <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>/ Результаты</Text>
         </Space>
         <Button
           icon={<HomeOutlined />}
@@ -66,7 +66,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
             color: '#fff',
           }}
         >
-          Home
+          На главную
         </Button>
       </div>
 
@@ -352,7 +352,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
               onClick={onRestart}
               style={{ borderRadius: 8, height: 44, paddingInline: 24 }}
             >
-              New quiz
+              Новый тест
             </Button>
           </Space>
         </div>

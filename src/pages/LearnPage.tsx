@@ -61,7 +61,7 @@ export default function LearnPage({ onGoHome }: Props) {
           style={{ background: 'rgba(255,255,255,0.15)', borderColor: 'rgba(255,255,255,0.3)', color: '#fff' }}
           size="small"
         >
-          Home
+          На главную
         </Button>
       </div>
 
@@ -75,7 +75,7 @@ export default function LearnPage({ onGoHome }: Props) {
                 Все вопросы &amp; ответы
               </Title>
               <Text type="secondary" style={{ fontSize: 13 }}>
-                {displayQuestions.length} вопросов · Правильные ответы выделены зеленым · Click{' '}
+                {displayQuestions.length} вопросов · Правильные ответы выделены зеленым · Нажмите{' '}
                 <BulbOutlined style={{ color: '#fa8c16' }} /> для объяснения
               </Text>
             </Col>

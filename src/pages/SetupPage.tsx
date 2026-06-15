@@ -67,15 +67,15 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
             onClick={onGoHome}
             style={{ padding: 0, color: '#8c8c8c', marginBottom: 16 }}
           >
-            Home
+            На главную
           </Button>
 
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: 28 }}>
             <BookOutlined style={{ fontSize: 52, color: '#1677ff', marginBottom: 12, display: 'block' }} />
-            <Title level={2} style={{ margin: 0, color: '#1a1a2e' }}>Quiz App</Title>
+            <Title level={2} style={{ margin: 0, color: '#1a1a2e' }}>Портал тестирования</Title>
             <Text type="secondary" style={{ fontSize: 14 }}>
-              {source.label} · {total} questions
+              {source.label} · {total} вопросов
             </Text>
           </div>
 
@@ -110,7 +110,7 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
                   max={total}
                   value={count}
                   onChange={setCount}
-                  tooltip={{ formatter: (v) => `${v} questions` }}
+                  tooltip={{ formatter: (v) => `${v} вопросов` }}
                   marks={{
                     1: '1',
                     [Math.round(total / 4)]: `${Math.round(total / 4)}`,
@@ -144,8 +144,8 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
                   step={5}
                   value={secondsPerQuestion}
                   onChange={setSecondsPerQuestion}
-                  tooltip={{ formatter: (v) => `${v}s` }}
-                  marks={{ 5: '5s', 10: '10s', 20: '20s', 30: '30s', 60: '1m' }}
+                  tooltip={{ formatter: (v) => `${v} сек` }}
+                  marks={{ 5: '5с', 10: '10с', 20: '20с', 30: '30с', 60: '1м' }}
                 />
               </Col>
               <Col>
@@ -156,7 +156,7 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
                   value={secondsPerQuestion}
                   onChange={(v) => v !== null && setSecondsPerQuestion(v)}
                   style={{ width: 72 }}
-                  addonAfter="s"
+                  addonAfter="с"
                 />
               </Col>
             </Row>
@@ -197,8 +197,8 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
                 <Switch
                   checked={feedbackMode === 'live'}
                   onChange={(checked) => setFeedbackMode(checked ? 'live' : 'end')}
-                  checkedChildren="Live"
-                  unCheckedChildren="End"
+                  checkedChildren="По ходу"
+                  unCheckedChildren="В конце"
                 />
               </Col>
             </Row>
@@ -218,7 +218,7 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
               >
                 <CheckCircleOutlined style={{ color: '#1677ff', fontSize: 18, marginBottom: 4, display: 'block' }} />
                 <Text style={{ fontSize: 12, color: '#0958d9' }}>
-                  {count} question{count !== 1 ? 's' : ''}
+                  {count} {count % 10 === 1 && count % 100 !== 11 ? 'вопрос' : count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 10 || count % 100 >= 20) ? 'вопроса' : 'вопросов'}
                 </Text>
               </div>
             </Col>
@@ -234,7 +234,7 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
               >
                 <ClockCircleOutlined style={{ color: '#722ed1', fontSize: 18, marginBottom: 4, display: 'block' }} />
                 <Text style={{ fontSize: 12, color: '#531dab' }}>
-                  ~{estimateMin} min estimate
+                  ~{estimateMin} мин
                 </Text>
               </div>
             </Col>

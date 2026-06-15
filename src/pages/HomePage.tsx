@@ -157,7 +157,7 @@ export default function HomePage({ onSelectLearn, onSelectQuiz }: Props) {
                 </Paragraph>
               </div>
               <Text style={{ color: '#722ed1', fontWeight: 600, fontSize: 14 }}>
-                Start quiz <RightOutlined />
+                Начать тест <RightOutlined />
               </Text>
             </Space>
           </Card>
