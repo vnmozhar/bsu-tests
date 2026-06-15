@@ -145,7 +145,7 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
                   value={secondsPerQuestion}
                   onChange={setSecondsPerQuestion}
                   tooltip={{ formatter: (v) => `${v}s` }}
-                  marks={{ 5: '5s', 30: '30s', 60: '1m', 120: '2m' }}
+                  marks={{ 5: '5s', 30: '30s', 60: '1m', 120: '2m', 300: '5m', 600: '10m' }}
                 />
               </Col>
               <Col>
