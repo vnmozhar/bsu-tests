@@ -132,7 +132,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
     <Card
       title={
         <Text strong style={{ fontSize: 13 }}>
-          Quiz navigation
+          Навигация по тесту
         </Text>
       }
       size="small"
@@ -145,7 +145,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
             className="quiz-nav-btn"
             onClick={() => setCurrentIndex(idx)}
             style={getNavStyle(idx)}
-            title={`Question ${idx + 1}${answers[questions[idx].id] ? ' (answered)' : ''}`}
+            title={`Вопрос ${idx + 1}${answers[questions[idx].id] ? ' (ответили)' : ''}`}
           >
             {idx + 1}
           </button>
@@ -154,10 +154,10 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
 
       {feedbackMode === 'live' && (
         <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <Tag color="default" style={{ margin: 0, fontSize: 11 }}>Unanswered</Tag>
-          <Tag color="default" style={{ margin: 0, fontSize: 11, background: '#8c8c8c', color: '#fff', border: 'none' }}>Answered</Tag>
-          <Tag color="success" style={{ margin: 0, fontSize: 11 }}>Correct</Tag>
-          <Tag color="error" style={{ margin: 0, fontSize: 11 }}>Wrong</Tag>
+          <Tag color="default" style={{ margin: 0, fontSize: 11 }}>Не отвечено</Tag>
+          <Tag color="default" style={{ margin: 0, fontSize: 11, background: '#8c8c8c', color: '#fff', border: 'none' }}>Отвечено</Tag>
+          <Tag color="success" style={{ margin: 0, fontSize: 11 }}>Правильно</Tag>
+          <Tag color="error" style={{ margin: 0, fontSize: 11 }}>Неправильно</Tag>
         </div>
       )}
     </Card>
@@ -170,22 +170,22 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
       style={{ borderColor: '#e8e8e8' }}
     >
       <Text type="secondary" style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5, display: 'block' }}>
-        Question {currentIndex + 1}
+        Вопрос {currentIndex + 1}
       </Text>
       <div style={{ marginTop: 8 }}>
         {currentAnswer ? (
           <Tag color="success" icon={<CheckCircleFilled />} style={{ fontSize: 11 }}>
-            Answered
+            Отвечено
           </Tag>
         ) : (
           <Tag color="default" style={{ fontSize: 11 }}>
-            Not answered
+            Не отвечено
           </Tag>
         )}
       </div>
       <Divider style={{ margin: '10px 0' }} />
       <Text type="secondary" style={{ fontSize: 11, display: 'block' }}>
-        Marked out of
+        Из / Максимальный балл
       </Text>
       <Text style={{ fontSize: 14, fontWeight: 600 }}>1.00</Text>
       <Divider style={{ margin: '10px 0' }} />
@@ -195,7 +195,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
         icon={<FlagOutlined />}
         style={{ padding: 0, fontSize: 11, color: '#8c8c8c', height: 'auto' }}
       >
-        Flag question
+        Отметить вопрос
       </Button>
     </Card>
   )
@@ -272,7 +272,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
         </Space>
         <Space>
           <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: 13 }}>
-            {answeredCount} / {questions.length} answered
+            {answeredCount} / {questions.length} ответили
           </Text>
           <Button
             icon={<HomeOutlined />}
@@ -284,7 +284,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
               color: '#fff',
             }}
           >
-            Home
+            На главную
           </Button>
         </Space>
       </div>
@@ -330,7 +330,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
                 }}
               >
                 <Text style={{ fontSize: 13, color: '#1677ff', fontWeight: 500 }}>
-                  {isMultiAnswer ? 'Select all correct answers' : 'Select correct answer'}
+                  {isMultiAnswer ? 'Выберите все правильные ответы' : 'Выберите правильный ответ'}
                 </Text>
                 <Space size={4}>
                   <ClockCircleOutlined style={{ color: timerColor, fontSize: 13 }} />
@@ -420,7 +420,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
                             {Array.isArray(currentQuestion.correct_answer) ? (
                               <>
                                 <strong>
-                                  Correct answers: {currentQuestion.correct_answer.join(', ')}.
+                                  Правильный ответ: {currentQuestion.correct_answer.join(', ')}.
                                 </strong>{' '}
                                 {currentQuestion.correct_answer
                                   .map((k) => currentQuestion.options[k])
@@ -428,7 +428,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
                               </>
                             ) : (
                               <>
-                                <strong>Correct answer: {currentQuestion.correct_answer}.</strong>{' '}
+                                <strong>Правильный ответ: {currentQuestion.correct_answer}.</strong>{' '}
                                 {currentQuestion.options[currentQuestion.correct_answer]}
                               </>
                             )}
@@ -484,7 +484,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
                     iconPosition="end"
                     icon={<RightOutlined />}
                   >
-                    Next
+                    Далее
                   </Button>
                 ) : (
                   <Button
@@ -494,7 +494,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
                     onClick={() => onSubmit(answers)}
                     style={{ marginLeft: !isDesktop ? 'auto' : undefined }}
                   >
-                    Finish attempt
+                    Завершить попытку
                   </Button>
                 )}
               </div>

@@ -50,10 +50,10 @@ export default function LearnPage({ onGoHome }: Props) {
           flexShrink: 0,
         }}
       >
-        <Space style={{ cursor: 'pointer' }} onClick={onGoHome} title="Back to Home">
+        <Space style={{ cursor: 'pointer' }} onClick={onGoHome} title="На главную">
           <BookOutlined style={{ color: '#fff', fontSize: 18 }} />
-          <Text style={{ color: '#fff', fontSize: 16, fontWeight: 600 }}>Quiz App</Text>
-          <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>/ Learn Mode</Text>
+          <Text style={{ color: '#fff', fontSize: 16, fontWeight: 600 }}>Портал тестирования</Text>
+          <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>/ Режим обучения</Text>
         </Space>
         <Button
           icon={<HomeOutlined />}
@@ -72,11 +72,11 @@ export default function LearnPage({ onGoHome }: Props) {
           <Row align="middle" justify="space-between" gutter={16} wrap={false}>
             <Col flex="auto">
               <Title level={3} style={{ margin: 0, marginBottom: 4 }}>
-                All Questions &amp; Answers
+                Все вопросы &amp; ответы
               </Title>
               <Text type="secondary" style={{ fontSize: 13 }}>
-                {displayQuestions.length} questions · Correct answers highlighted in green · Click{' '}
-                <BulbOutlined style={{ color: '#fa8c16' }} /> for explanation
+                {displayQuestions.length} вопросов · Правильные ответы выделены зеленым · Click{' '}
+                <BulbOutlined style={{ color: '#fa8c16' }} /> для объяснения
               </Text>
             </Col>
             <Col>
@@ -180,7 +180,7 @@ export default function LearnPage({ onGoHome }: Props) {
                       onClick={() => toggleExplanation(q.id)}
                       style={{ padding: '0 4px', color: isExpanded ? '#fa8c16' : '#8c8c8c', fontWeight: 500 }}
                     >
-                      {isExpanded ? 'Hide explanation' : 'Show explanation'}
+                      {isExpanded ? 'Скрыть объяснение' : 'Показать объяснение'}
                     </Button>
 
                     {isExpanded && (
@@ -214,7 +214,7 @@ export default function LearnPage({ onGoHome }: Props) {
             onClick={onGoHome}
             style={{ borderRadius: 8, height: 44, paddingInline: 28 }}
           >
-            Back to Home
+            На главную
           </Button>
         </div>
       </div>

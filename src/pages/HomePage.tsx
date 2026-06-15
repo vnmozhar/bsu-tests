@@ -29,7 +29,7 @@ export default function HomePage({ onSelectLearn, onSelectQuiz }: Props) {
       }}
     >
       {/* Sessions history icon — top right */}
-      <Tooltip title="Session history" placement="left">
+      <Tooltip title="История попыток" placement="left">
         <Button
           shape="circle"
           icon={<HistoryOutlined />}
@@ -52,10 +52,10 @@ export default function HomePage({ onSelectLearn, onSelectQuiz }: Props) {
       <Space direction="vertical" align="center" size={4} style={{ marginBottom: 48 }}>
         <BookOutlined style={{ fontSize: 52, color: '#fff' }} />
         <Title level={1} style={{ color: '#fff', margin: 0, fontWeight: 800, letterSpacing: -0.5 }}>
-          Quiz App
+          Портал тестирования
         </Title>
         <Text style={{ color: 'rgba(255,255,255,0.75)', fontSize: 15 }}>
-          International Economics · {total} questions
+          Учебное тестирование · {total} вопросов
         </Text>
       </Space>
 
@@ -99,14 +99,14 @@ export default function HomePage({ onSelectLearn, onSelectQuiz }: Props) {
               </div>
               <div>
                 <Title level={3} style={{ margin: 0, marginBottom: 8 }}>
-                  Learn Mode
+                  Режим обучения
                 </Title>
                 <Paragraph type="secondary" style={{ margin: 0, fontSize: 14, lineHeight: 1.6 }}>
-                  Browse all {total} questions with correct answers highlighted. Great for studying.
+                  Просмотр всех вопросов {total} с выделенными правильными ответами. Отлично подходит для изучения.
                 </Paragraph>
               </div>
               <Text style={{ color: '#1677ff', fontWeight: 600, fontSize: 14 }}>
-                View all questions <RightOutlined />
+                Посмотреть все вопросы <RightOutlined />
               </Text>
             </Space>
           </Card>
@@ -150,10 +150,10 @@ export default function HomePage({ onSelectLearn, onSelectQuiz }: Props) {
               </div>
               <div>
                 <Title level={3} style={{ margin: 0, marginBottom: 8 }}>
-                  Quiz Mode
+                  Режим тестирования
                 </Title>
                 <Paragraph type="secondary" style={{ margin: 0, fontSize: 14, lineHeight: 1.6 }}>
-                  Pick a random set of questions and test yourself. Get a score at the end.
+                  Пройдите случайный тест, чтобы проверить свои знания, и узнайте свой результат в конце.
                 </Paragraph>
               </div>
               <Text style={{ color: '#722ed1', fontWeight: 600, fontSize: 14 }}>
