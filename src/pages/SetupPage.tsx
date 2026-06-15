@@ -84,7 +84,7 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
           {/* Question bank selector */}
           <div style={{ marginBottom: 20 }}>
             <Text strong style={{ display: 'block', marginBottom: 6, fontSize: 14 }}>
-              Question bank
+              Банк вопросов
             </Text>
             <Select
               value={sourceKey}
@@ -98,10 +98,10 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
           {/* Question count */}
           <div style={{ marginBottom: 20 }}>
             <Text strong style={{ display: 'block', marginBottom: 6, fontSize: 14 }}>
-              Number of questions
+              Количество вопросов
             </Text>
             <Text type="secondary" style={{ fontSize: 12, display: 'block', marginBottom: 12 }}>
-              Choose how many random questions you want to answer
+              Выберите, сколько случайных вопросов вы хотите ответить
             </Text>
             <Row gutter={16} align="middle">
               <Col flex="auto">
@@ -134,24 +134,24 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
           {/* Seconds per question */}
           <div style={{ marginBottom: 20 }}>
             <Text strong style={{ display: 'block', marginBottom: 6, fontSize: 14 }}>
-              Seconds per question
+              Время на один вопрос
             </Text>
             <Row gutter={16} align="middle">
               <Col flex="auto">
                 <Slider
                   min={5}
-                  max={600}
+                  max={60}
                   step={5}
                   value={secondsPerQuestion}
                   onChange={setSecondsPerQuestion}
                   tooltip={{ formatter: (v) => `${v}s` }}
-                  marks={{ 5: '5s', 60: '1m', 120: '2m', 300: '5m', 600: '10m' }}
+                  marks={{ 5: '5s', 10: '10s', 20: '20s', 30: '30s', 60: '1m' }}
                 />
               </Col>
               <Col>
                 <InputNumber
                   min={5}
-                  max={600}
+                  max={60}
                   step={5}
                   value={secondsPerQuestion}
                   onChange={(v) => v !== null && setSecondsPerQuestion(v)}
@@ -185,12 +185,12 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
               </Col>
               <Col flex="auto">
                 <Text strong style={{ display: 'block', fontSize: 14, marginBottom: 2 }}>
-                  Feedback mode
+                  Режим обратной связи
                 </Text>
                 <Text type="secondary" style={{ fontSize: 12 }}>
                   {feedbackMode === 'live'
-                    ? 'You\'ll see correct/incorrect after each answer'
-                    : 'Results shown only after you finish the quiz'}
+                    ? 'Вы увидите, верно/неверно ли ответили, после каждого вопроса'
+                    : 'Результаты будут показаны только после завершения теста'}
                 </Text>
               </Col>
               <Col>
@@ -249,11 +249,11 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
             onClick={() => onStart(count, feedbackMode, secondsPerQuestion, sourceKey)}
             style={{ height: 50, fontSize: 16, borderRadius: 8 }}
           >
-            Start Quiz
+            Начать тест
           </Button>
 
           <Paragraph style={{ textAlign: 'center', marginTop: 12, marginBottom: 0, fontSize: 12 }} type="secondary">
-            Questions are randomly selected from the question bank
+            Вопросы выбираются случайным образом из банка вопросов
           </Paragraph>
         </Space>
       </Card>

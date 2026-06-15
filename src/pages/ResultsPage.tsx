@@ -101,7 +101,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
             <Row gutter={48} justify="center">
               <Col>
                 <Statistic
-                  title="Correct"
+                  title="Верно"
                   value={correctCount}
                   suffix={`/ ${total}`}
                   valueStyle={{ color: '#52c41a', fontWeight: 700 }}
@@ -110,7 +110,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
               </Col>
               <Col>
                 <Statistic
-                  title="Incorrect"
+                  title="Неверно"
                   value={total - correctCount}
                   suffix={`/ ${total}`}
                   valueStyle={{ color: '#ff4d4f', fontWeight: 700 }}
@@ -126,7 +126,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
               onClick={onRestart}
               style={{ borderRadius: 8, height: 46, paddingInline: 32, fontSize: 15 }}
             >
-              Start new quiz
+              Начать новый тест
             </Button>
           </Space>
         </Card>
@@ -136,8 +136,8 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
           title={
             <Space>
               <CheckCircleFilled style={{ color: '#1677ff' }} />
-              <Text strong>Review: Questions &amp; Answers</Text>
-              <Tag color="blue">{total} questions</Tag>
+              <Text strong>Обзор: Вопросы &amp; Ответы</Text>
+              <Tag color="blue">{total} вопросов</Tag>
             </Space>
           }
           style={{ borderRadius: 10 }}
@@ -181,7 +181,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
                             color="success"
                             style={{ margin: 0 }}
                           >
-                            Correct
+                            Верно
                           </Tag>
                         ) : (
                           <Tag
@@ -189,7 +189,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
                             color="error"
                             style={{ margin: 0 }}
                           >
-                            Incorrect
+                            Неверно
                           </Tag>
                         )}
                       </Space>
@@ -274,14 +274,14 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
                         }}
                       >
                         <Text style={{ fontSize: 12, color: '#873800' }}>
-                          Your answer:{' '}
+                          Ваш ответ:{' '}
                           <Text style={{ fontWeight: 600, color: '#cf1322' }}>
                             {Array.isArray(userAnswer)
                               ? userAnswer.map((k) => `${k}. ${q.options[k]}`).join(', ')
                               : userAnswer ? `${userAnswer}. ${q.options[userAnswer]}` : '—'}
                           </Text>
                           {'  →  '}
-                          Correct:{' '}
+                          Правильно:{' '}
                           <Text style={{ fontWeight: 600, color: '#389e0d' }}>
                             {Array.isArray(q.correct_answer)
                               ? q.correct_answer.map((k) => `${k}. ${q.options[k]}`).join(', ')
@@ -305,7 +305,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
                             fontWeight: 500,
                           }}
                         >
-                          {expandedExpl.includes(q.id) ? 'Hide explanation' : 'Show explanation'}
+                          {expandedExpl.includes(q.id) ? 'Скрыть объяснение' : 'Показать объяснение'}
                         </Button>
 
                         {expandedExpl.includes(q.id) && (
@@ -343,7 +343,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
               onClick={onGoHome}
               style={{ borderRadius: 8, height: 44, paddingInline: 24 }}
             >
-              Home
+              На главную
             </Button>
             <Button
               type="default"
