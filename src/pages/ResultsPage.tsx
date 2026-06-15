@@ -51,7 +51,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
           flexShrink: 0,
         }}
       >
-        <Space style={{ cursor: 'pointer' }} onClick={onGoHome} title="Back to Home">
+        <Space style={{ cursor: 'pointer' }} onClick={onGoHome} title="На главную">
           <BookOutlined style={{ color: '#fff', fontSize: 18 }} />
           <Text style={{ color: '#fff', fontSize: 16, fontWeight: 600 }}>Quiz App</Text>
           <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>/ Results</Text>
