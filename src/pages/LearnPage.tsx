@@ -134,7 +134,8 @@ export default function LearnPage({ onGoHome }: Props) {
                 {/* Options */}
                 <Space direction="vertical" size={4} style={{ width: '100%', paddingLeft: 44 }}>
                   {Object.entries(q.options).map(([key, text]) => {
-                    const isCorrect = key === q.correct_answer
+                    const correctArr = Array.isArray(q.correct_answer) ? q.correct_answer : [q.correct_answer]
+                    const isCorrect = correctArr.includes(key)
                     return (
                       <div
                         key={key}
