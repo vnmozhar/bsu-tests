@@ -7,12 +7,13 @@ import {
   CheckOutlined, CloseOutlined, HomeOutlined, BookOutlined, BulbOutlined,
 } from '@ant-design/icons'
 import type { Question } from '../types'
+import { isAnswerCorrect } from '../utils/answerUtils'
 
 const { Title, Text, Paragraph } = Typography
 
 interface Props {
   questions: Question[]
-  answers: Record<number, string>
+  answers: Record<number, string | string[]>
   onRestart: () => void
   onGoHome: () => void
 }
@@ -30,7 +31,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
   const toggleExpl = (id: number) =>
     setExpandedExpl((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id])
 
-  const correctCount = questions.filter((q) => answers[q.id] === q.correct_answer).length
+  const correctCount = questions.filter((q) => isAnswerCorrect(answers[q.id], q.correct_answer)).length
   const total = questions.length
   const percent = Math.round((correctCount / total) * 100)
   const grade = getGrade(percent)
@@ -144,7 +145,8 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
         >
           {questions.map((q, idx) => {
             const userAnswer = answers[q.id]
-            const isCorrect = userAnswer === q.correct_answer
+            const isCorrect = isAnswerCorrect(userAnswer, q.correct_answer)
+            const correctAnswerArr = Array.isArray(q.correct_answer) ? q.correct_answer : [q.correct_answer]
 
             return (
               <div key={q.id}>
@@ -205,8 +207,10 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
                   <div style={{ paddingLeft: 36 }}>
                     <Space direction="vertical" size={3} style={{ width: '100%' }}>
                       {Object.entries(q.options).map(([key, text]) => {
-                        const isCorrectOpt = key === q.correct_answer
-                        const isUserOpt = key === userAnswer
+                        const isCorrectOpt = correctAnswerArr.includes(key)
+                        const isUserOpt = Array.isArray(userAnswer)
+                          ? userAnswer.includes(key)
+                          : key === userAnswer
 
                         let bg = 'transparent'
                         let borderColor = 'transparent'
@@ -272,12 +276,16 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
                         <Text style={{ fontSize: 12, color: '#873800' }}>
                           Your answer:{' '}
                           <Text style={{ fontWeight: 600, color: '#cf1322' }}>
-                            {userAnswer}. {q.options[userAnswer]}
+                            {Array.isArray(userAnswer)
+                              ? userAnswer.map((k) => `${k}. ${q.options[k]}`).join(', ')
+                              : userAnswer ? `${userAnswer}. ${q.options[userAnswer]}` : '—'}
                           </Text>
                           {'  →  '}
                           Correct:{' '}
                           <Text style={{ fontWeight: 600, color: '#389e0d' }}>
-                            {q.correct_answer}. {q.options[q.correct_answer]}
+                            {Array.isArray(q.correct_answer)
+                              ? q.correct_answer.map((k) => `${k}. ${q.options[k]}`).join(', ')
+                              : `${q.correct_answer}. ${q.options[q.correct_answer]}`}
                           </Text>
                         </Text>
                       </div>

@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import {
-  Card, Radio, Button, Space, Typography, Progress, Tag, Alert,
+  Card, Radio, Checkbox, Button, Space, Typography, Progress, Tag, Alert,
   Divider, Row, Col, Grid,
 } from 'antd'
 import {
@@ -9,6 +9,7 @@ import {
   ClockCircleOutlined,
 } from '@ant-design/icons'
 import type { Question, FeedbackMode } from '../types'
+import { isAnswerCorrect } from '../utils/answerUtils'
 
 const { Text, Paragraph } = Typography
 const { useBreakpoint } = Grid
@@ -17,13 +18,13 @@ interface Props {
   questions: Question[]
   feedbackMode: FeedbackMode
   secondsPerQuestion: number
-  onSubmit: (answers: Record<number, string>) => void
+  onSubmit: (answers: Record<number, string | string[]>) => void
   onGoHome: () => void
 }
 
 export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, onSubmit, onGoHome }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [answers, setAnswers] = useState<Record<number, string>>({})
+  const [answers, setAnswers] = useState<Record<number, string | string[]>>({})
   const [checked, setChecked] = useState<Set<number>>(new Set())
   const [timeLeft, setTimeLeft] = useState(secondsPerQuestion)
   const screens = useBreakpoint()
@@ -63,7 +64,11 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
   const currentQuestion = questions[currentIndex]
   const currentAnswer = answers[currentQuestion.id]
   const isCurrentChecked = checked.has(currentQuestion.id)
-  const isCurrentCorrect = currentAnswer === currentQuestion.correct_answer
+  const isMultiAnswer = Array.isArray(currentQuestion.correct_answer)
+  const correctAnswerArr = Array.isArray(currentQuestion.correct_answer)
+    ? currentQuestion.correct_answer
+    : [currentQuestion.correct_answer]
+  const isCurrentCorrect = isAnswerCorrect(currentAnswer, currentQuestion.correct_answer)
 
   const answeredCount = Object.keys(answers).length
   const allAnswered = answeredCount === questions.length
@@ -75,8 +80,15 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
     timerRatio > 0.5 ? '#52c41a' : timerRatio > 0.25 ? '#fa8c16' : '#ff4d4f'
   const timerUrgent = timerRatio <= 0.25
 
-  const handleAnswer = useCallback((questionId: number, value: string) => {
-    setAnswers((prev) => ({ ...prev, [questionId]: value }))
+  const handleAnswer = useCallback((questionId: number, value: string | string[]) => {
+    setAnswers((prev) => {
+      // Don't store empty selection for multi-answer questions
+      if (Array.isArray(value) && value.length === 0) {
+        const { [questionId]: _, ...rest } = prev
+        return rest
+      }
+      return { ...prev, [questionId]: value }
+    })
   }, [])
 
   const handleCheck = useCallback(() => {
@@ -95,7 +107,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
       return { background: '#1677ff', borderColor: '#1677ff', color: '#fff' }
     }
     if (feedbackMode === 'live' && isChk) {
-      return ans === q.correct_answer
+      return isAnswerCorrect(ans, q.correct_answer)
         ? { background: '#52c41a', borderColor: '#52c41a', color: '#fff' }
         : { background: '#ff4d4f', borderColor: '#ff4d4f', color: '#fff' }
     }
@@ -107,8 +119,12 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
 
   const getOptionClass = (optionKey: string) => {
     if (feedbackMode === 'end' || !isCurrentChecked) return 'quiz-option-row'
-    if (optionKey === currentQuestion.correct_answer) return 'quiz-option-row correct'
-    if (optionKey === currentAnswer) return 'quiz-option-row wrong'
+    const isCorrectOpt = correctAnswerArr.includes(optionKey)
+    const isSelectedOpt = Array.isArray(currentAnswer)
+      ? currentAnswer.includes(optionKey)
+      : currentAnswer === optionKey
+    if (isCorrectOpt) return 'quiz-option-row correct'
+    if (isSelectedOpt) return 'quiz-option-row wrong'
     return 'quiz-option-row'
   }
 
@@ -183,6 +199,49 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
       </Button>
     </Card>
   )
+
+  const showFeedback = feedbackMode === 'live' && isCurrentChecked
+
+  const optionItems = Object.entries(currentQuestion.options).map(([key, text]) => {
+    const isCorrectOpt = correctAnswerArr.includes(key)
+    const isSelectedOpt = Array.isArray(currentAnswer)
+      ? currentAnswer.includes(key)
+      : currentAnswer === key
+
+    return (
+      <div key={key} className={`${getOptionClass(key)}${showFeedback ? ' disabled' : ''}`}>
+        <Row align="middle" gutter={8} style={{ flexWrap: 'nowrap' }}>
+          <Col flex="auto">
+            {isMultiAnswer ? (
+              <Checkbox value={key} style={{ width: '100%', margin: 0 }}>
+                <Text style={{ fontSize: 14, lineHeight: 1.6 }}>
+                  <Text style={{ fontWeight: 600, marginRight: 4 }}>{key}.</Text>
+                  {text}
+                </Text>
+              </Checkbox>
+            ) : (
+              <Radio value={key} style={{ width: '100%', margin: 0 }}>
+                <Text style={{ fontSize: 14, lineHeight: 1.6 }}>
+                  <Text style={{ fontWeight: 600, marginRight: 4 }}>{key}.</Text>
+                  {text}
+                </Text>
+              </Radio>
+            )}
+          </Col>
+          {showFeedback && isCorrectOpt && (
+            <Col>
+              <CheckCircleFilled style={{ color: '#52c41a', fontSize: 18 }} />
+            </Col>
+          )}
+          {showFeedback && isSelectedOpt && !isCorrectOpt && (
+            <Col>
+              <CloseCircleFilled style={{ color: '#ff4d4f', fontSize: 18 }} />
+            </Col>
+          )}
+        </Row>
+      </div>
+    )
+  })
 
   return (
     <div style={{ minHeight: '100vh', background: '#f4f5f7', display: 'flex', flexDirection: 'column' }}>
@@ -271,7 +330,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
                 }}
               >
                 <Text style={{ fontSize: 13, color: '#1677ff', fontWeight: 500 }}>
-                  Select correct answer
+                  {isMultiAnswer ? 'Select all correct answers' : 'Select correct answer'}
                 </Text>
                 <Space size={4}>
                   <ClockCircleOutlined style={{ color: timerColor, fontSize: 13 }} />
@@ -317,49 +376,33 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
               </div>
 
               <Text type="secondary" style={{ fontSize: 13, display: 'block', marginBottom: 10 }}>
-                Select one:
+                {isMultiAnswer ? 'Select all that apply:' : 'Select one:'}
               </Text>
 
               {/* Options */}
-              <Radio.Group
-                value={currentAnswer ?? null}
-                onChange={(e) => handleAnswer(currentQuestion.id, e.target.value as string)}
-                style={{ display: 'block' }}
-                disabled={feedbackMode === 'live' && isCurrentChecked}
-              >
-                <Space direction="vertical" style={{ width: '100%' }} size={0}>
-                  {Object.entries(currentQuestion.options).map(([key, text]) => {
-                    const isCorrectOpt = key === currentQuestion.correct_answer
-                    const isSelectedOpt = key === currentAnswer
-                    const showFeedback = feedbackMode === 'live' && isCurrentChecked
-
-                    return (
-                      <div key={key} className={`${getOptionClass(key)}${feedbackMode === 'live' && isCurrentChecked ? ' disabled' : ''}`}>
-                        <Row align="middle" gutter={8} style={{ flexWrap: 'nowrap' }}>
-                          <Col flex="auto">
-                            <Radio value={key} style={{ width: '100%', margin: 0 }}>
-                              <Text style={{ fontSize: 14, lineHeight: 1.6 }}>
-                                <Text style={{ fontWeight: 600, marginRight: 4 }}>{key}.</Text>
-                                {text}
-                              </Text>
-                            </Radio>
-                          </Col>
-                          {showFeedback && isCorrectOpt && (
-                            <Col>
-                              <CheckCircleFilled style={{ color: '#52c41a', fontSize: 18 }} />
-                            </Col>
-                          )}
-                          {showFeedback && isSelectedOpt && !isCorrectOpt && (
-                            <Col>
-                              <CloseCircleFilled style={{ color: '#ff4d4f', fontSize: 18 }} />
-                            </Col>
-                          )}
-                        </Row>
-                      </div>
-                    )
-                  })}
-                </Space>
-              </Radio.Group>
+              {isMultiAnswer ? (
+                <Checkbox.Group
+                  value={Array.isArray(currentAnswer) ? currentAnswer : []}
+                  onChange={(values) => handleAnswer(currentQuestion.id, values as string[])}
+                  style={{ display: 'block' }}
+                  disabled={feedbackMode === 'live' && isCurrentChecked}
+                >
+                  <Space direction="vertical" style={{ width: '100%' }} size={0}>
+                    {optionItems}
+                  </Space>
+                </Checkbox.Group>
+              ) : (
+                <Radio.Group
+                  value={currentAnswer ?? null}
+                  onChange={(e) => handleAnswer(currentQuestion.id, e.target.value as string)}
+                  style={{ display: 'block' }}
+                  disabled={feedbackMode === 'live' && isCurrentChecked}
+                >
+                  <Space direction="vertical" style={{ width: '100%' }} size={0}>
+                    {optionItems}
+                  </Space>
+                </Radio.Group>
+              )}
 
               {/* Feedback alert + explanation (live mode) */}
               {feedbackMode === 'live' && isCurrentChecked && (
@@ -374,8 +417,21 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
                         : (
                           <span>
                             Incorrect.{' '}
-                            <strong>Correct answer: {currentQuestion.correct_answer}.</strong>{' '}
-                            {currentQuestion.options[currentQuestion.correct_answer]}
+                            {Array.isArray(currentQuestion.correct_answer) ? (
+                              <>
+                                <strong>
+                                  Correct answers: {currentQuestion.correct_answer.join(', ')}.
+                                </strong>{' '}
+                                {currentQuestion.correct_answer
+                                  .map((k) => currentQuestion.options[k])
+                                  .join('; ')}
+                              </>
+                            ) : (
+                              <>
+                                <strong>Correct answer: {currentQuestion.correct_answer}.</strong>{' '}
+                                {currentQuestion.options[currentQuestion.correct_answer]}
+                              </>
+                            )}
                           </span>
                         )
                     }

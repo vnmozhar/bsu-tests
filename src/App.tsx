@@ -6,6 +6,7 @@ import SetupPage from './pages/SetupPage'
 import QuizPage from './pages/QuizPage'
 import ResultsPage from './pages/ResultsPage'
 import type { Question, FeedbackMode } from './types'
+import { isAnswerCorrect } from './utils/answerUtils'
 import {
   startLearnSession,
   endLearnSession,
@@ -22,7 +23,7 @@ export default function App() {
   const [questions, setQuestions] = useState<Question[]>([])
   const [feedbackMode, setFeedbackMode] = useState<FeedbackMode>('end')
   const [secondsPerQuestion, setSecondsPerQuestion] = useState(30)
-  const [finalAnswers, setFinalAnswers] = useState<Record<number, string>>({})
+  const [finalAnswers, setFinalAnswers] = useState<Record<number, string | string[]>>({})
   const sessionId = useRef<string | null>(null)
 
   const goHome = () => {
@@ -60,8 +61,8 @@ export default function App() {
     setView('quiz')
   }
 
-  const handleSubmit = (answers: Record<number, string>) => {
-    const correct = questions.filter((q) => answers[q.id] === q.correct_answer).length
+  const handleSubmit = (answers: Record<number, string | string[]>) => {
+    const correct = questions.filter((q) => isAnswerCorrect(answers[q.id], q.correct_answer)).length
     const total = questions.length
     const percent = Math.round((correct / total) * 100)
     if (sessionId.current) {

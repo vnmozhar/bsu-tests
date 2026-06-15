@@ -2,7 +2,7 @@ export interface Question {
   id: number;
   question: string;
   options: Record<string, string>;
-  correct_answer: string;
+  correct_answer: string | string[];
   explanation: string;
 }
 
