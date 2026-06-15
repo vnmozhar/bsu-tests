@@ -23,7 +23,7 @@ const sourceOptions = questionSources.map((s) => ({
 
 export default function SetupPage({ onStart, onGoHome }: Props) {
   const [sourceKey, setSourceKey] = useState('all')
-  const [secondsPerQuestion, setSecondsPerQuestion] = useState(30)
+  const [secondsPerQuestion, setSecondsPerQuestion] = useState(60)
   const [feedbackMode, setFeedbackMode] = useState<FeedbackMode>('end')
 
   const source = getSourceByKey(sourceKey)
@@ -145,7 +145,7 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
                   value={secondsPerQuestion}
                   onChange={setSecondsPerQuestion}
                   tooltip={{ formatter: (v) => `${v}s` }}
-                  marks={{ 5: '5s', 30: '30s', 60: '1m', 120: '2m', 300: '5m', 600: '10m' }}
+                  marks={{ 5: '5s', 60: '1m', 120: '2m', 300: '5m', 600: '10m' }}
                 />
               </Col>
               <Col>
