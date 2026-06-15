@@ -461,15 +461,6 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
 
               {/* Action buttons */}
               <div style={{ marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                {feedbackMode === 'live' && !isCurrentChecked && currentAnswer && (
-                  <Button
-                    onClick={handleCheck}
-                    icon={<CheckOutlined />}
-                    style={{ background: '#f0f7ff', borderColor: '#1677ff', color: '#1677ff' }}
-                  >
-                    Проверить
-                  </Button>
-                )}
                 <Button
                   onClick={() => setCurrentIndex((i) => i - 1)}
                   disabled={currentIndex === 0}
@@ -477,7 +468,16 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
                 >
                   Назад
                 </Button>
-                {currentIndex < questions.length - 1 ? (
+                {feedbackMode === 'live' && !isCurrentChecked ? (
+                  <Button
+                    type="primary"
+                    onClick={handleCheck}
+                    disabled={!currentAnswer}
+                    icon={<CheckOutlined />}
+                  >
+                    Проверить
+                  </Button>
+                ) : currentIndex < questions.length - 1 ? (
                   <Button
                     type="primary"
                     onClick={() => setCurrentIndex((i) => i + 1)}
