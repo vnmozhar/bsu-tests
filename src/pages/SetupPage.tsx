@@ -140,7 +140,7 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
               <Col flex="auto">
                 <Slider
                   min={5}
-                  max={120}
+                  max={600}
                   step={5}
                   value={secondsPerQuestion}
                   onChange={setSecondsPerQuestion}
