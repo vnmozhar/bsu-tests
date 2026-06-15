@@ -151,7 +151,7 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
               <Col>
                 <InputNumber
                   min={5}
-                  max={120}
+                  max={600}
                   step={5}
                   value={secondsPerQuestion}
                   onChange={(v) => v !== null && setSecondsPerQuestion(v)}
