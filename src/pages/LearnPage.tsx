@@ -69,26 +69,20 @@ export default function LearnPage({ onGoHome }: Props) {
       <div style={{ flex: 1, padding: '24px 20px', maxWidth: 900, margin: '0 auto', width: '100%' }}>
         {/* Page title */}
         <Card style={{ marginBottom: 20, borderRadius: 10 }} styles={{ body: { padding: '20px 24px' } }}>
-          <Row align="middle" justify="space-between" gutter={16} wrap={false}>
-            <Col flex="auto">
-              <Title level={3} style={{ margin: 0, marginBottom: 4 }}>
-                Все вопросы &amp; ответы
-              </Title>
-              <Text type="secondary" style={{ fontSize: 13 }}>
-                {displayQuestions.length} вопросов · Правильные ответы выделены зеленым · Нажмите{' '}
-                <BulbOutlined style={{ color: '#fa8c16' }} /> для объяснения
-              </Text>
-            </Col>
-            <Col>
-              <Select
-                value={sourceKey}
-                onChange={setSourceKey}
-                options={sourceOptions}
-                style={{ minWidth: 180 }}
-                suffixIcon={<DatabaseOutlined />}
-              />
-            </Col>
-          </Row>
+          <Title level={3} style={{ margin: 0, marginBottom: 4 }}>
+            Все вопросы &amp; ответы
+          </Title>
+          <Text type="secondary" style={{ fontSize: 13 }}>
+            {displayQuestions.length} вопросов · Правильные ответы выделены зеленым · Нажмите{' '}
+            <BulbOutlined style={{ color: '#fa8c16' }} /> для объяснения
+          </Text>
+          <Select
+            value={sourceKey}
+            onChange={setSourceKey}
+            options={sourceOptions}
+            style={{ width: '100%', marginTop: 16 }}
+            suffixIcon={<DatabaseOutlined />}
+          />
         </Card>
 
         {/* Questions list */}
