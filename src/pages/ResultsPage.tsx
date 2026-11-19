@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {
-  Card, Button, Typography, Progress, Space, Tag, Divider, Row, Col, Statistic,
+  Card, Button, Typography, Progress, Space, Tag, Divider, Row, Col, Statistic, Grid,
 } from 'antd'
 import {
   CheckCircleFilled, CloseCircleFilled, TrophyOutlined, ReloadOutlined,
@@ -10,6 +10,7 @@ import type { Question } from '../types'
 import { isAnswerCorrect } from '../utils/answerUtils'
 
 const { Title, Text, Paragraph } = Typography
+const { useBreakpoint } = Grid
 
 interface Props {
   questions: Question[]
@@ -26,6 +27,8 @@ function getGrade(percent: number): { label: string; color: string } {
 }
 
 export default function ResultsPage({ questions, answers, onRestart, onGoHome }: Props) {
+  const screens = useBreakpoint()
+  const isMobile = !screens.sm
   const [expandedExpl, setExpandedExpl] = useState<number[]>([])
 
   const toggleExpl = (id: number) =>
@@ -42,7 +45,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
       <div
         style={{
           background: '#1677ff',
-          padding: '0 24px',
+          padding: isMobile ? '0 12px' : '0 24px',
           height: 54,
           display: 'flex',
           alignItems: 'center',
@@ -54,29 +57,35 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
         <Space style={{ cursor: 'pointer' }} onClick={onGoHome} title="На главную">
           <BookOutlined style={{ color: '#fff', fontSize: 18 }} />
           <Text style={{ color: '#fff', fontSize: 16, fontWeight: 600 }}>Портал тестирования</Text>
-          <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>/ Результаты</Text>
+          {!isMobile && (
+            <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>/ Результаты</Text>
+          )}
         </Space>
         <Button
           icon={<HomeOutlined />}
+          aria-label="На главную"
+          title="На главную"
           size="small"
           onClick={onGoHome}
           style={{
             background: 'rgba(255,255,255,0.15)',
             borderColor: 'rgba(255,255,255,0.3)',
             color: '#fff',
+            width: isMobile ? 40 : undefined,
+            height: isMobile ? 40 : undefined,
           }}
         >
-          На главную
+          {!isMobile && 'На главную'}
         </Button>
       </div>
 
-      <div style={{ flex: 1, padding: '24px 16px' }}>
+      <div style={{ flex: 1, padding: isMobile ? '16px 10px' : '24px 16px' }}>
       <div style={{ maxWidth: 860, margin: '0 auto' }}>
 
         {/* Score card */}
         <Card
           style={{ marginBottom: 24, textAlign: 'center', borderRadius: 10 }}
-          styles={{ body: { padding: '40px 32px' } }}
+          styles={{ body: { padding: isMobile ? '28px 16px' : '40px 32px' } }}
         >
           <Space direction="vertical" align="center" size={20} style={{ width: '100%' }}>
             <TrophyOutlined style={{ fontSize: 56, color: grade.color }} />
@@ -98,7 +107,7 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
               )}
             />
 
-            <Row gutter={48} justify="center">
+            <Row gutter={isMobile ? 16 : 48} justify="center">
               <Col>
                 <Statistic
                   title="Верно"
@@ -134,14 +143,14 @@ export default function ResultsPage({ questions, answers, onRestart, onGoHome }:
         {/* Review card */}
         <Card
           title={
-            <Space>
+            <Space wrap>
               <CheckCircleFilled style={{ color: '#1677ff' }} />
               <Text strong>Обзор: Вопросы &amp; Ответы</Text>
               <Tag color="blue">{total} вопросов</Tag>
             </Space>
           }
           style={{ borderRadius: 10 }}
-          styles={{ body: { padding: '0 24px' } }}
+          styles={{ body: { padding: isMobile ? '0 12px' : '0 24px' } }}
         >
           {questions.map((q, idx) => {
             const userAnswer = answers[q.id]

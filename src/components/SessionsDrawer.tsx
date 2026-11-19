@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import {
-  Drawer, Button, Space, Typography, Tag, Empty, List, Divider, Popconfirm, Tooltip,
+  Drawer, Button, Space, Typography, Tag, Empty, List, Divider, Popconfirm, Tooltip, Grid,
 } from 'antd'
 import {
   DownloadOutlined, DeleteOutlined, ReadOutlined, TrophyOutlined,
@@ -12,6 +12,7 @@ import {
 import type { Session, QuizSession } from '../utils/sessions'
 
 const { Text } = Typography
+const { useBreakpoint } = Grid
 
 interface Props {
   open: boolean
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export default function SessionsDrawer({ open, onClose }: Props) {
+  const screens = useBreakpoint()
   const [sessions, setSessions] = useState<Session[]>([])
 
   useEffect(() => {
@@ -49,7 +51,7 @@ export default function SessionsDrawer({ open, onClose }: Props) {
       }
       open={open}
       onClose={onClose}
-      width={420}
+      width={screens.sm ? 420 : '100vw'}
       extra={
         sessions.length > 0 ? (
           <Space>

@@ -1,21 +1,19 @@
 import { useState, useMemo, useEffect } from 'react'
-import { Card, Typography, Space, Divider, Button, Row, Col, Select } from 'antd'
+import { Card, Typography, Space, Divider, Button, Row, Col, TreeSelect, Grid } from 'antd'
 import { CheckCircleFilled, HomeOutlined, BookOutlined, BulbOutlined, DatabaseOutlined } from '@ant-design/icons'
-import { questionSources, getSourceByKey } from '../utils/questionSources'
+import { getSourceByKey, questionSourceOptions } from '../utils/questionSources'
 import { shuffleOptions } from '../utils/shuffle'
 
 const { Title, Text, Paragraph } = Typography
+const { useBreakpoint } = Grid
 
 interface Props {
   onGoHome: () => void
 }
 
-const sourceOptions = questionSources.map((s) => ({
-  value: s.key,
-  label: `${s.label} (${s.count})`,
-}))
-
 export default function LearnPage({ onGoHome }: Props) {
+  const screens = useBreakpoint()
+  const isMobile = !screens.sm
   const [sourceKey, setSourceKey] = useState('all')
   const [expanded, setExpanded] = useState<number[]>([])
 
@@ -29,6 +27,10 @@ export default function LearnPage({ onGoHome }: Props) {
     [sourceKey]
   )
 
+  const handleSourceChange = (value: string | number | undefined) => {
+    if (value !== undefined) setSourceKey(String(value))
+  }
+
   const toggleExplanation = (id: number) => {
     setExpanded((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
@@ -41,7 +43,7 @@ export default function LearnPage({ onGoHome }: Props) {
       <div
         style={{
           background: '#1677ff',
-          padding: '0 24px',
+          padding: isMobile ? '0 12px' : '0 24px',
           height: 54,
           display: 'flex',
           alignItems: 'center',
@@ -53,22 +55,32 @@ export default function LearnPage({ onGoHome }: Props) {
         <Space style={{ cursor: 'pointer' }} onClick={onGoHome} title="На главную">
           <BookOutlined style={{ color: '#fff', fontSize: 18 }} />
           <Text style={{ color: '#fff', fontSize: 16, fontWeight: 600 }}>Портал тестирования</Text>
-          <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>/ Режим обучения</Text>
+          {!isMobile && (
+            <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>/ Режим обучения</Text>
+          )}
         </Space>
         <Button
           icon={<HomeOutlined />}
+          aria-label="На главную"
+          title="На главную"
           onClick={onGoHome}
-          style={{ background: 'rgba(255,255,255,0.15)', borderColor: 'rgba(255,255,255,0.3)', color: '#fff' }}
-          size="small"
+          style={{
+            background: 'rgba(255,255,255,0.15)',
+            borderColor: 'rgba(255,255,255,0.3)',
+            color: '#fff',
+            width: isMobile ? 40 : undefined,
+            height: isMobile ? 40 : undefined,
+          }}
+          size={isMobile ? 'middle' : 'small'}
         >
-          На главную
+          {!isMobile && 'На главную'}
         </Button>
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, padding: '24px 20px', maxWidth: 900, margin: '0 auto', width: '100%' }}>
+      <div style={{ flex: 1, padding: isMobile ? '16px 12px' : '24px 20px', maxWidth: 900, margin: '0 auto', width: '100%' }}>
         {/* Page title */}
-        <Card style={{ marginBottom: 20, borderRadius: 10 }} styles={{ body: { padding: '20px 24px' } }}>
+        <Card style={{ marginBottom: 20, borderRadius: 10 }} styles={{ body: { padding: isMobile ? 16 : '20px 24px' } }}>
           <Title level={3} style={{ margin: 0, marginBottom: 4 }}>
             Все вопросы &amp; ответы
           </Title>
@@ -76,12 +88,16 @@ export default function LearnPage({ onGoHome }: Props) {
             {displayQuestions.length} вопросов · Правильные ответы выделены зеленым · Нажмите{' '}
             <BulbOutlined style={{ color: '#fa8c16' }} /> для объяснения
           </Text>
-          <Select
+          <TreeSelect
             value={sourceKey}
-            onChange={setSourceKey}
-            options={sourceOptions}
+            onChange={handleSourceChange}
+            treeData={questionSourceOptions}
+            treeDefaultExpandAll
+            treeNodeFilterProp="title"
+            size={isMobile ? 'large' : 'middle'}
             style={{ width: '100%', marginTop: 16 }}
             suffixIcon={<DatabaseOutlined />}
+            placeholder="Выберите предмет или тему"
           />
         </Card>
 
@@ -92,7 +108,7 @@ export default function LearnPage({ onGoHome }: Props) {
             const isExpanded = expanded.includes(q.id)
 
             return (
-              <Card key={q.id} style={{ borderRadius: 8 }} styles={{ body: { padding: '20px 24px' } }}>
+              <Card key={q.id} style={{ borderRadius: 8 }} styles={{ body: { padding: isMobile ? 16 : '20px 24px' } }}>
                 {/* Question header */}
                 <Row align="top" gutter={12} style={{ marginBottom: 14, flexWrap: 'nowrap' }}>
                   <Col>
@@ -126,7 +142,7 @@ export default function LearnPage({ onGoHome }: Props) {
                 <Divider style={{ margin: '0 0 12px' }} />
 
                 {/* Options */}
-                <Space direction="vertical" size={4} style={{ width: '100%', paddingLeft: 44 }}>
+                <Space direction="vertical" size={4} style={{ width: '100%', paddingLeft: isMobile ? 32 : 44 }}>
                   {Object.entries(q.options).map(([key, text]) => {
                     const correctArr = Array.isArray(q.correct_answer) ? q.correct_answer : [q.correct_answer]
                     const isCorrect = correctArr.includes(key)
@@ -167,7 +183,7 @@ export default function LearnPage({ onGoHome }: Props) {
 
                 {/* Explanation toggle */}
                 {explanation && (
-                  <div style={{ paddingLeft: 44, marginTop: 12 }}>
+                  <div style={{ paddingLeft: isMobile ? 32 : 44, marginTop: 12 }}>
                     <Button
                       type="text"
                       size="small"

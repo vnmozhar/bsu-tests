@@ -31,7 +31,7 @@ Output goes to `dist/`.
 
 ## Question banks
 
-Question files are loaded from `src/data/`. Files with the same name prefix before `__` are combined into one subject bank; for example, `УгПрцс__участники_УП.json` and `УгПрцс__принципы_УП.json` appear together as `УгПрцс`. The combined bank includes the questions from both files.
+Question files are loaded from `src/data/`. Files with the same name prefix before `__` appear under one subject in the hierarchical selector. Choose the subject to use all its questions or expand it and choose a file to use one topic; for example, `УгПрцс__участники_УП.json` and `УгПрцс__принципы_УП.json` are listed under `УгПрцс`.
 
 ## Deploy to Vercel
 

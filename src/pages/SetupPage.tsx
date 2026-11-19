@@ -1,27 +1,25 @@
 import { useState } from 'react'
 import {
-  Card, Button, InputNumber, Switch, Space, Typography, Divider, Slider, Row, Col, Select,
+  Card, Button, InputNumber, Switch, Space, Typography, Divider, Slider, Row, Col, TreeSelect, Grid,
 } from 'antd'
 import {
   PlayCircleOutlined, BookOutlined, BulbOutlined, CheckCircleOutlined, ClockCircleOutlined,
   HomeOutlined, DatabaseOutlined,
 } from '@ant-design/icons'
 import type { FeedbackMode } from '../types'
-import { questionSources, getSourceByKey } from '../utils/questionSources'
+import { getSourceByKey, questionSourceOptions } from '../utils/questionSources'
 
 const { Title, Text, Paragraph } = Typography
+const { useBreakpoint } = Grid
 
 interface Props {
   onStart: (count: number, mode: FeedbackMode, secondsPerQuestion: number, sourceKey: string) => void
   onGoHome: () => void
 }
 
-const sourceOptions = questionSources.map((s) => ({
-  value: s.key,
-  label: `${s.label} (${s.count})`,
-}))
-
 export default function SetupPage({ onStart, onGoHome }: Props) {
+  const screens = useBreakpoint()
+  const isMobile = !screens.sm
   const [sourceKey, setSourceKey] = useState('all')
   const [secondsPerQuestion, setSecondsPerQuestion] = useState(60)
   const [feedbackMode, setFeedbackMode] = useState<FeedbackMode>('end')
@@ -31,7 +29,9 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
 
   const [count, setCount] = useState(Math.min(10, total))
 
-  const handleSourceChange = (key: string) => {
+  const handleSourceChange = (value: string | number | undefined) => {
+    if (value === undefined) return
+    const key = String(value)
     const newSource = getSourceByKey(key)
     setSourceKey(key)
     setCount((prev) => Math.min(prev, newSource.count))
@@ -51,18 +51,18 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 24,
+        padding: isMobile ? 12 : 24,
       }}
     >
       <Card
         style={{ width: '100%', maxWidth: 520, borderRadius: 12, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}
-        styles={{ body: { padding: '36px 40px' } }}
+        styles={{ body: { padding: isMobile ? '24px 18px' : '36px 40px' } }}
       >
         <Space direction="vertical" size={0} style={{ width: '100%' }}>
           {/* Home link */}
           <Button
             type="text"
-            size="small"
+            size={isMobile ? 'middle' : 'small'}
             icon={<HomeOutlined />}
             onClick={onGoHome}
             style={{ padding: 0, color: '#8c8c8c', marginBottom: 16 }}
@@ -86,12 +86,16 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
             <Text strong style={{ display: 'block', marginBottom: 6, fontSize: 14 }}>
               Банк вопросов
             </Text>
-            <Select
+            <TreeSelect
               value={sourceKey}
               onChange={handleSourceChange}
-              options={sourceOptions}
+              treeData={questionSourceOptions}
+              treeDefaultExpandAll
+              treeNodeFilterProp="title"
+              size={isMobile ? 'large' : 'middle'}
               style={{ width: '100%' }}
               suffixIcon={<DatabaseOutlined />}
+              placeholder="Выберите предмет или тему"
             />
           </div>
 
@@ -111,7 +115,7 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
                   value={count}
                   onChange={setCount}
                   tooltip={{ formatter: (v) => `${v} вопросов` }}
-                  marks={{
+                  marks={isMobile ? undefined : {
                     1: '1',
                     [Math.round(total / 4)]: `${Math.round(total / 4)}`,
                     [Math.round(total / 2)]: `${Math.round(total / 2)}`,
@@ -145,7 +149,7 @@ export default function SetupPage({ onStart, onGoHome }: Props) {
                   value={secondsPerQuestion}
                   onChange={setSecondsPerQuestion}
                   tooltip={{ formatter: (v) => `${v} сек` }}
-                  marks={{ 5: '5с', 10: '10с', 20: '20с', 30: '30с', 60: '1м' }}
+                  marks={isMobile ? undefined : { 5: '5с', 10: '10с', 20: '20с', 30: '30с', 60: '1м' }}
                 />
               </Col>
               <Col>

@@ -29,6 +29,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
   const [timeLeft, setTimeLeft] = useState(secondsPerQuestion)
   const screens = useBreakpoint()
   const isDesktop = !!screens.lg
+  const isMobile = !screens.sm
 
   // Stable refs to avoid stale closures in timer effects
   const answersRef = useRef(answers)
@@ -249,7 +250,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
       <div
         style={{
           background: '#1677ff',
-          padding: '0 24px',
+          padding: isMobile ? '0 12px' : '0 24px',
           height: 54,
           display: 'flex',
           alignItems: 'center',
@@ -266,31 +267,37 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
           <Text style={{ color: '#fff', fontSize: 16, fontWeight: 600 }}>
             Портал тестирования
           </Text>
-          <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>
-            / Режим тестирования
-          </Text>
+          {!isMobile && (
+            <Text style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>
+              / Режим тестирования
+            </Text>
+          )}
         </Space>
         <Space>
           <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: 13 }}>
-            {answeredCount} / {questions.length} ответили
+            {isMobile ? `${answeredCount}/${questions.length}` : `${answeredCount} / ${questions.length} ответили`}
           </Text>
           <Button
             icon={<HomeOutlined />}
+            aria-label="На главную"
+            title="На главную"
             size="small"
             onClick={onGoHome}
             style={{
               background: 'rgba(255,255,255,0.15)',
               borderColor: 'rgba(255,255,255,0.3)',
               color: '#fff',
+              width: isMobile ? 40 : undefined,
+              height: isMobile ? 40 : undefined,
             }}
           >
-            На главную
+            {!isMobile && 'На главную'}
           </Button>
         </Space>
       </div>
 
       {/* Progress bar */}
-      <div style={{ background: '#fff', padding: '6px 24px', borderBottom: '1px solid #e8e8e8' }}>
+      <div style={{ background: '#fff', padding: isMobile ? '6px 12px' : '6px 24px', borderBottom: '1px solid #e8e8e8' }}>
         <Progress
           percent={progressPercent}
           showInfo={false}
@@ -301,7 +308,7 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
       </div>
 
       {/* Body */}
-      <div style={{ flex: 1, padding: '16px 20px' }}>
+      <div style={{ flex: 1, padding: isMobile ? '12px 10px' : '16px 20px' }}>
         <Row gutter={12}>
           {/* Left info panel — desktop only */}
           {isDesktop && (
@@ -313,20 +320,22 @@ export default function QuizPage({ questions, feedbackMode, secondsPerQuestion, 
           {/* Main question */}
           <Col xs={24} lg={isDesktop ? 16 : 24}>
             <Card
-              styles={{ body: { padding: '28px 32px' } }}
+              styles={{ body: { padding: isMobile ? '20px 16px' : '28px 32px' } }}
               style={{ marginBottom: 16 }}
             >
               {/* Section header with timer */}
               <div
                 style={{
                   background: '#e8f4f8',
-                  margin: '-28px -32px 24px',
-                  padding: '12px 24px',
+                  margin: isMobile ? '-20px -16px 20px' : '-28px -32px 24px',
+                  padding: isMobile ? '12px 14px' : '12px 24px',
                   borderBottom: '1px solid #c9e6f0',
                   borderRadius: '6px 6px 0 0',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
+                  gap: 8,
+                  flexWrap: 'wrap',
                 }}
               >
                 <Text style={{ fontSize: 13, color: '#1677ff', fontWeight: 500 }}>
