@@ -35,12 +35,21 @@ const sortedEntries = Object.entries(modules).sort(([a], [b]) =>
   a.localeCompare(b)
 )
 
-const fileSources: QuestionSource[] = sortedEntries.map(([path, qs]) => {
+const questionsBySubject = new Map<string, Question[]>()
+for (const [path, qs] of sortedEntries) {
   const name = nameFromPath(path)
-  const questions = withSequentialIds(Array.isArray(qs) ? qs : [])
+  const separatorIndex = name.indexOf('__')
+  const subject = separatorIndex === -1 ? name : name.slice(0, separatorIndex)
+  const subjectQuestions = questionsBySubject.get(subject) ?? []
+  subjectQuestions.push(...(Array.isArray(qs) ? qs : []))
+  questionsBySubject.set(subject, subjectQuestions)
+}
+
+const fileSources: QuestionSource[] = Array.from(questionsBySubject, ([subject, qs]) => {
+  const questions = withSequentialIds(qs)
   return {
-    key: name,
-    label: labelFromName(name),
+    key: subject,
+    label: labelFromName(subject),
     count: questions.length,
     questions,
   }

@@ -29,6 +29,10 @@ npm run preview
 
 Output goes to `dist/`.
 
+## Question banks
+
+Question files are loaded from `src/data/`. Files with the same name prefix before `__` are combined into one subject bank; for example, `УгПрцс__участники_УП.json` and `УгПрцс__принципы_УП.json` appear together as `УгПрцс`. The combined bank includes the questions from both files.
+
 ## Deploy to Vercel
 
 Connect this repo in the Vercel dashboard — it auto-detects Vite. Or use the CLI:
