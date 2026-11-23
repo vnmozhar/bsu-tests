@@ -12,7 +12,7 @@
     "correct_answer": [
       "b"
     ],
-    "explanation": ""
+    "explanation": "Виктимология изучает потерпевших, риск и процесс виктимизации, отношения потерпевшего и правонарушителя, а также реакцию институтов. В криминологии ее предмет обычно ограничен жертвами преступлений, хотя более широкая концепция может включать и другие виды вреда. [OJP, Victimology: Basic Theoretical Concepts](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   },
   {
     "id": 118,
@@ -27,7 +27,7 @@
     "correct_answer": [
       "b"
     ],
-    "explanation": ""
+    "explanation": "Криминальная виктимология исследует роль и положение потерпевшего в преступном событии, уязвимость, взаимодействие с правонарушителем и предупреждение повторной виктимизации. Анализ роли потерпевшего не переносит на него ответственность за преступление. [Источник по теме и терминологии](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   },
   {
     "id": 119,
@@ -42,7 +42,7 @@
     "correct_answer": [
       "b"
     ],
-    "explanation": ""
+    "explanation": "1948 год связан с книгой Ганса фон Гентига The Criminal and His Victim, ставшей важной ранней работой о взаимодействии преступника и потерпевшего. Но дата основания виктимологии спорна: исследования Мендельсона появились раньше, а отдельная дисциплина оформлялась постепенно. [UNAFEI, victimology overview](https://www.unafei.or.jp/publications/pdf/RS_No114/No114_18_PART_TWO_Visiting_Experts_Paper.pdf)."
   },
   {
     "id": 120,
@@ -57,7 +57,7 @@
     "correct_answer": [
       "b"
     ],
-    "explanation": ""
+    "explanation": "Ганса фон Гентига часто называют одним из основателей криминальной виктимологии за систематическое изучение связи потерпевшего и преступника и типологию жертв. Термин «виктимология» также исторически связывают с Беньямином Мендельсоном, поэтому однозначное единоличное первенство упрощает историю. [OJP, Victimology: Basic Theoretical Concepts](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   },
   {
     "id": 121,
@@ -72,7 +72,7 @@
     "correct_answer": [
       "c"
     ],
-    "explanation": ""
+    "explanation": "Первый международный симпозиум по виктимологии состоялся в Иерусалиме в 1973 году и способствовал международному оформлению дисциплины и движения за права потерпевших. [OJP, New Directions from the Field, ch. 18](https://ovc.ojp.gov/sites/ovc/files/pubs/OVC_Archives/directions/chap18.htm)."
   },
   {
     "id": 122,
@@ -87,7 +87,7 @@
     "correct_answer": [
       "d"
     ],
-    "explanation": ""
+    "explanation": "Всемирное общество виктимологов было учреждено в 1979 году; это отдельное событие от первого международного симпозиума 1973 года. Историческая справка относится к международной организации, а не к созданию виктимологии как идеи. [Источник по теме и терминологии](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   },
   {
     "id": 123,
@@ -102,7 +102,7 @@
     "correct_answer": [
       "c"
     ],
-    "explanation": ""
+    "explanation": "Виктимность описывает подверженность человека риску стать жертвой в определенных обстоятельствах. Это вероятностная характеристика взаимодействия личности, поведения и среды, а не вина потерпевшего и не неизменное свойство человека. [Источник по теме и терминологии](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   },
   {
     "id": 124,
@@ -117,7 +117,7 @@
     "correct_answer": [
       "d"
     ],
-    "explanation": ""
+    "explanation": "«Всеобщая виктимность» не является отдельным видом индивидуальной/групповой виктимности в обычной классификации: потенциальная возможность пострадать существует у любого, но классификации обычно различают личный, групповой, ролевой или ситуационный риск. Терминология зависит от учебника. [Источник по теме и терминологии](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   },
   {
     "id": 125,
@@ -132,7 +132,7 @@
     "correct_answer": [
       "c"
     ],
-    "explanation": ""
+    "explanation": "«Нейтральная виктимность» не относится к стандартным уровням риска; нейтральные, соучаствующие и провоцирующие - это типы потерпевших по предполагаемой степени участия, отдельное основание классификации из № 134. Не смешивай типы жертв и виды виктимности. [Источник по теме и терминологии](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   },
   {
     "id": 126,
@@ -147,7 +147,7 @@
     "correct_answer": [
       "b"
     ],
-    "explanation": ""
+    "explanation": "Виктимизация - процесс, в ходе которого лицо или группа становится потерпевшим; повторная виктимизация означает несколько эпизодов вреда. Она может зависеть от повторяющихся условий и контактов, а не от «вины» потерпевшего. [UNODC, Manual on Victimization Surveys](https://unodc.org/documents/data-and-analysis/Crime-statistics/Manual_on_Victimization_surveys_2009_web.pdf)."
   },
   {
     "id": 127,
@@ -162,7 +162,7 @@
     "correct_answer": [
       "d"
     ],
-    "explanation": ""
+    "explanation": "Ролевая виктимность связывает риск с социально выполняемой ролью или профессией: некоторые виды деятельности создают больше контактов с потенциальными правонарушителями или опасными ситуациями. Риск не означает, что каждый представитель группы обязательно станет потерпевшим. [Источник по теме и терминологии](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   },
   {
     "id": 128,
@@ -177,7 +177,7 @@
     "correct_answer": [
       "a"
     ],
-    "explanation": ""
+    "explanation": "Групповая виктимность - повышенная вероятность виктимизации, характерная для группы, выделенной по социальному, профессиональному, возрастному или иному признаку. Это групповой уровень анализа, который не позволяет автоматически предсказать индивидуальную судьбу. [Источник по теме и терминологии](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   },
   {
     "id": 129,
@@ -192,7 +192,7 @@
     "correct_answer": [
       "b"
     ],
-    "explanation": ""
+    "explanation": "«Потерпевший» - правовой термин, тогда как «жертва» шире в виктимологии и может обозначать пострадавшее лицо до официального признания процессуального статуса. В учебном тесте они сближены, но для юридической процедуры это не полные синонимы. [UN General Assembly, Declaration on Victims, para. 2](https://www.ohchr.org/sites/default/files/victims.pdf)."
   },
   {
     "id": 130,
@@ -206,7 +206,7 @@
     "correct_answer": [
       "b"
     ],
-    "explanation": ""
+    "explanation": "Виктимологическое понятие жертвы основывается на фактически причиненном вреде и не всегда зависит от формального процессуального решения. Декларация ООН также считает человека потерпевшим независимо от того, установлен ли, привлечен ли или осужден ли правонарушитель; конкретный процессуальный статус определяется национальным правом. [UN Declaration of Basic Principles of Justice for Victims, para. 2](https://www.ohchr.org/sites/default/files/victims.pdf)."
   },
   {
     "id": 131,
@@ -221,7 +221,7 @@
     "correct_answer": [
       "b"
     ],
-    "explanation": ""
+    "explanation": "Роль потерпевшего в событии может быть разной: противодействие, нейтральное поведение либо действия, повлиявшие на развитие взаимодействия. Виктимологический анализ нужен для понимания механизма и профилактики, но не снимает с правонарушителя ответственности за его выбор. [Источник по теме и терминологии](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   },
   {
     "id": 132,
@@ -236,7 +236,7 @@
     "correct_answer": [
       "a"
     ],
-    "explanation": ""
+    "explanation": "Это учебная поведенческая типология: отрицательный, нейтрально-положительный и активно-положительный типы описывают реакции и поведение в конкретном взаимодействии. Такая оценка зависит от критериев автора и не должна служить обвинением потерпевшего; международные стандарты требуют уважительного обращения с жертвами. [UN Declaration on Victims](https://www.ohchr.org/sites/default/files/victims.pdf)."
   },
   {
     "id": 133,
@@ -251,7 +251,7 @@
     "correct_answer": [
       "b"
     ],
-    "explanation": ""
+    "explanation": "Классификация по отношениям с правонарушителем различает случайную встречу, заранее сложившиеся отношения и предопределенные ролью контакты. Это основание классификации отлично от оценки поведения или степени участия жертвы. [Источник по теме и терминологии](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   },
   {
     "id": 134,
@@ -266,7 +266,7 @@
     "correct_answer": [
       "c"
     ],
-    "explanation": ""
+    "explanation": "Здесь классифицируют степень участия/поведенческий вклад в событие: нейтральный, соучаствующий или провоцирующий тип. Терминология специфична для учебной виктимологии; юридическую вину потерпевшего она не устанавливает. [UN Declaration on Victims](https://www.ohchr.org/sites/default/files/victims.pdf)."
   },
   {
     "id": 135,
@@ -281,7 +281,7 @@
     "correct_answer": [
       "c"
     ],
-    "explanation": ""
+    "explanation": "Этот ответ следует оценивать осторожно: тяжесть причиненного вреда сама по себе не определяет поведенческий тип потерпевшего. «Активно-положительный» обычно описывает активные действия потерпевшего, способствующие общественно полезной цели или защите, но из одного факта тяжкого повреждения такой вывод не следует. Ключ, вероятно, опирается на отсутствующую в вопросе типологическую ситуацию; нужен исходный контекст. [Источник по теме и терминологии](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   },
   {
     "id": 136,
@@ -296,7 +296,7 @@
     "correct_answer": [
       "a"
     ],
-    "explanation": ""
+    "explanation": "В описании лицо само создает конфликт, совершая аморальные или противоправные действия, на которые реагирует причинитель вреда; это соответствует агрессивному типу в классификации потерпевших. Такое описание анализирует ход конфликта и не оправдывает насилие в ответ. [Источник по теме и терминологии](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   },
   {
     "id": 137,
@@ -311,7 +311,7 @@
     "correct_answer": [
       "a"
     ],
-    "explanation": ""
+    "explanation": "Виктимологическая профилактика снижает вероятность стать жертвой: информирует о рисках, меняет опасные условия, защищает уязвимые группы и предупреждает повторное причинение вреда. Она дополняет, а не заменяет ответственность правонарушителя. [UNODC, Manual on Victimization Surveys](https://unodc.org/documents/data-and-analysis/Crime-statistics/Manual_on_Victimization_surveys_2009_web.pdf)."
   },
   {
     "id": 138,
@@ -326,6 +326,6 @@
     "correct_answer": [
       "b"
     ],
-    "explanation": ""
+    "explanation": "Общий уровень воздействует на общественные условия; специальный направлен на группы или типичные ситуации повышенного риска; индивидуальный учитывает конкретного человека и его обстоятельства. Это уровни организации профилактики, а не степени вины жертвы. [Источник по теме и терминологии](https://www.ojp.gov/ncjrs/virtual-library/abstracts/victimology-basic-theoretical-concepts-and-practical-implications)."
   }
 ]
