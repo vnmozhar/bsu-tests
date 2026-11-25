@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { Card, Typography, Space, Divider, Button, Row, Col, TreeSelect, Grid } from 'antd'
+import { Card, Typography, Space, Divider, Button, Row, Col, TreeSelect, Grid, Radio, Switch } from 'antd'
 import { CheckCircleFilled, HomeOutlined, BookOutlined, BulbOutlined, DatabaseOutlined } from '@ant-design/icons'
 import { getSourceByKey, questionSourceOptions } from '../utils/questionSources'
 import { shuffleOptions } from '../utils/shuffle'
@@ -16,6 +16,8 @@ export default function LearnPage({ onGoHome }: Props) {
   const isMobile = !screens.sm
   const [sourceKey, setSourceKey] = useState('all')
   const [expanded, setExpanded] = useState<number[]>([])
+  const [shuffleAnswers, setShuffleAnswers] = useState(true)
+  const [labelStyle, setLabelStyle] = useState<'number' | 'cyrillic' | 'latin'>('cyrillic')
 
   // Reset expanded explanations when source changes
   useEffect(() => {
@@ -23,8 +25,25 @@ export default function LearnPage({ onGoHome }: Props) {
   }, [sourceKey])
 
   const displayQuestions = useMemo(
-    () => getSourceByKey(sourceKey).questions.map(shuffleOptions),
-    [sourceKey]
+    () => getSourceByKey(sourceKey).questions.map((question) => {
+      const ordered = shuffleAnswers ? shuffleOptions(question) : question
+      const labels = labelStyle === 'number'
+        ? ['1', '2', '3', '4', '5', '6']
+        : labelStyle === 'latin' ? ['a', 'b', 'c', 'd', 'e', 'f'] : ['а', 'б', 'в', 'г', 'д', 'е']
+      const entries = Object.entries(ordered.options)
+      const keyMap: Record<string, string> = {}
+      const options: Record<string, string> = {}
+      entries.forEach(([key, text], index) => {
+        const label = labels[index] ?? String(index + 1)
+        keyMap[key] = label
+        options[label] = text
+      })
+      const correct_answer = Array.isArray(ordered.correct_answer)
+        ? ordered.correct_answer.map((key) => keyMap[key])
+        : keyMap[ordered.correct_answer]
+      return { ...ordered, options, correct_answer }
+    }),
+    [sourceKey, shuffleAnswers, labelStyle]
   )
 
   const handleSourceChange = (value: string | number | undefined) => {
@@ -99,6 +118,20 @@ export default function LearnPage({ onGoHome }: Props) {
             suffixIcon={<DatabaseOutlined />}
             placeholder="Выберите предмет или тему"
           />
+          <Space direction={isMobile ? 'vertical' : 'horizontal'} size={16} style={{ marginTop: 16, width: '100%' }}>
+            <Space>
+              <Text>Случайный порядок ответов</Text>
+              <Switch checked={shuffleAnswers} onChange={setShuffleAnswers} />
+            </Space>
+            <Space wrap>
+              <Text>Нумерация:</Text>
+              <Radio.Group value={labelStyle} onChange={(event) => setLabelStyle(event.target.value)} optionType="button" buttonStyle="solid" size="small">
+                <Radio.Button value="number">Цифрами</Radio.Button>
+                <Radio.Button value="cyrillic">Кириллицей</Radio.Button>
+                <Radio.Button value="latin">Латиницей</Radio.Button>
+              </Radio.Group>
+            </Space>
+          </Space>
         </Card>
 
         {/* Questions list */}
