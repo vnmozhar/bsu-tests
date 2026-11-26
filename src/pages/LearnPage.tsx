@@ -16,7 +16,7 @@ export default function LearnPage({ onGoHome }: Props) {
   const isMobile = !screens.sm
   const [sourceKey, setSourceKey] = useState('all')
   const [expanded, setExpanded] = useState<number[]>([])
-  const [shuffleAnswers, setShuffleAnswers] = useState(true)
+  const [shuffleAnswers, setShuffleAnswers] = useState(false)
   const [labelStyle, setLabelStyle] = useState<'number' | 'cyrillic' | 'latin'>('cyrillic')
 
   // Reset expanded explanations when source changes
